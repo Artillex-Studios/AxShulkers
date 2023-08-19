@@ -1,0 +1,22 @@
+prefix: "&#CC00FF&lAxShulkers &7» "
+
+# this setting is not reloadable, you have to restart the server
+# how often should the plugin save shulker boxes from ram to the database?
+# this is in minutes
+auto-save-minutes: 5
+
+# if this is on, the plugin won't save items to the shulker item
+# this makes it impossible to see what is in the shulker without opening it
+# note: this will break the shulker peeking functionality in plugins (like in auction houses or [item] plugins)
+enable-obsfucation: false
+
+# how often should people be able to peek in shulker boxes
+# note: this is not required for security, you can leave it on 0 to disable
+open-cooldown-miliseconds: 0
+
+database:
+  # h2, sqlite
+  type: "h2"
+
+# do not change this
+version: 1

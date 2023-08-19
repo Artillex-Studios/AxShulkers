@@ -1,0 +1,14 @@
+name: AxShulkers
+version: '${project.version}'
+main: com.artillexstudios.axshulkers.AxShulkers
+api-version: '1.13'
+
+commands:
+  axshulkers:
+    usage: /<command>
+
+permissions:
+  axshulkers.reload:
+    default: op
+  axshulkers.clear:
+    default: op

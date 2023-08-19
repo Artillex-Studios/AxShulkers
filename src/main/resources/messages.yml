@@ -1,0 +1,21 @@
+reloaded: "&#33FF33Successfully reloaded plugin!"
+cleared: "&#33FF33The shulker in your hand have been removed from the database!"
+cooldown: "&#FF3333You can't open shulkers for &f%seconds% &#FF3333seconds!"
+
+help:
+  - " "
+  - "&#CC00FF&lAxShulkers &7» "
+  - " &7- &f/axir reload <gray>|</gray> &7| &#CC00FFReload plugin"
+  - " &7- &f/axir clear <gray>|</gray> &7| &#CC00FFTurns shulker in hand into a normal one"
+  - " "
+
+# name of the shulker gui
+shulker-title: "&0Shulker Box"
+
+errors:
+  no-permission: "&#FF3333You don't have permission to run this command!"
+  no-shulker: "&#FF3333You are not holding a shulker box!"
+  creative-copy-item: "&#FF3333It looks like you have copied a shulker box, but no worries, we fixed it for you!"
+
+# do not change this
+version: 1
