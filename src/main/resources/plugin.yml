@@ -6,6 +6,8 @@ api-version: '1.13'
 commands:
   axshulkers:
     usage: /<command>
+    aliases:
+      - axshulker
 
 permissions:
   axshulkers.reload:

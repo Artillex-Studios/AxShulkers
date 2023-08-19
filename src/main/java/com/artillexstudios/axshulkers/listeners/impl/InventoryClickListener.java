@@ -3,8 +3,13 @@ package com.artillexstudios.axshulkers.listeners.impl;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
+import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
@@ -13,6 +18,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 
 public class InventoryClickListener implements Listener {
 
@@ -59,6 +66,14 @@ public class InventoryClickListener implements Listener {
         }
 
         if (!isShulkerGui) return;
+
+        MessageUtils.sendMsgP(event.getPlayer(), "close.message");
+
+        if (!MESSAGES.getString("close.sound").isEmpty()) {
+            final Audience audience = Audience.audience((Audience) event.getPlayer());
+            final Sound sound = Sound.sound(Key.key(MESSAGES.getString("close.sound")), Sound.Source.MASTER, 1f, 1f);
+            audience.playSound(sound);
+        }
 
         ShulkerUtils.setShulkerContents(event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer().getOpenInventory().getTopInventory(), false);
     }

@@ -54,7 +54,10 @@ public class Shulkerboxes {
         if (!shulkerboxMap.containsKey(uuid)) {
             // load into ram from db
             final ItemStack[] shulkerItems = AxShulkers.getDB().getShulker(uuid);
-            if (shulkerItems == null) return null;
+            if (shulkerItems == null) {
+                ShulkerUtils.removeShulkerUUID(it);
+                return getShulker(it);
+            }
 
             final Inventory shulkerInv = Bukkit.createInventory(null, 27, ColorUtils.format(MESSAGES.getString("shulker-title")));
             shulkerInv.setContents(shulkerItems);

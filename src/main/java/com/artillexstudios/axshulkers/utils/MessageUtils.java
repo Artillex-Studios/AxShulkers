@@ -12,14 +12,18 @@ import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 public class MessageUtils {
 
     public static void sendMsgP(CommandSender p, String path) {
+        if (MESSAGES.getString(path).isEmpty()) return;
         p.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + MESSAGES.getString(path)));
     }
 
     public static void sendMsgP(Player p, String path) {
+        if (MESSAGES.getString(path).isEmpty()) return;
         p.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + MESSAGES.getString(path)));
     }
 
     public static void sendMsgP(Player p, String path, Map<String, String> replacements) {
+        if (MESSAGES.getString(path).isEmpty()) return;
+
         AtomicReference<String> message = new AtomicReference<>(MESSAGES.getString(path));
         replacements.forEach((key, value) -> message.set(message.get().replace(key, value)));
         p.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + message));

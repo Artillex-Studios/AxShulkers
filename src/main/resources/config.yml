@@ -14,6 +14,7 @@ enable-obsfucation: false
 # note: this is not required for security, you can leave it on 0 to disable
 open-cooldown-miliseconds: 0
 
+# this setting is not reloadable, you have to restart the server
 database:
   # h2, sqlite
   type: "h2"
