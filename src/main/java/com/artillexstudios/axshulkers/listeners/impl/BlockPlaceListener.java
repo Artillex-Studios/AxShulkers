@@ -32,6 +32,7 @@ public class BlockPlaceListener implements Listener {
 
             AxShulkers.getDatabaseQueue().submit(() -> {
                 AxShulkers.getDB().removeShulker(shulkerbox.getUUID());
+                Shulkerboxes.removeShulkerbox(shulkerbox.getUUID());
             });
         });
     }
