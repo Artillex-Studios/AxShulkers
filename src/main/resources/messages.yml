@@ -16,8 +16,8 @@ close:
 help:
   - " "
   - "&#CC00FF&lAxShulkers &7» "
-  - " &7- &f/axshulkers reload <gray>|</gray> &7| &#CC00FFReload plugin"
-  - " &7- &f/axshulkers clear <gray>|</gray> &7| &#CC00FFTurns shulker in hand into a normal one"
+  - " &7- &f/axshulkers reload &7| &#CC00FFReload plugin"
+  - " &7- &f/axshulkers clear &7| &#CC00FFTurns shulker in hand into a normal one"
   - " "
 
 # name of the shulker gui
