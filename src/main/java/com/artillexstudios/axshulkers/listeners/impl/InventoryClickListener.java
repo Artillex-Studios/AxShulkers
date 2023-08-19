@@ -19,6 +19,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 
 public class InventoryClickListener implements Listener {
@@ -32,6 +33,11 @@ public class InventoryClickListener implements Listener {
         }
 
         if (!isShulkerGui) return;
+
+        if (!event.getWhoClicked().hasPermission("axshulkers.modify")) {
+            event.setCancelled(true);
+            return;
+        }
 
         final ItemStack it = event.getClick() == ClickType.NUMBER_KEY ? event.getWhoClicked().getInventory().getItem(event.getHotbarButton()) : event.getCurrentItem();
         if (ShulkerUtils.isShulker(it)) event.setCancelled(true);
@@ -51,6 +57,11 @@ public class InventoryClickListener implements Listener {
         }
 
         if (!isShulkerGui) return;
+
+        if (!event.getWhoClicked().hasPermission("axshulkers.modify")) {
+            event.setCancelled(true);
+            return;
+        }
 
         Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
             ShulkerUtils.setShulkerContents(event.getWhoClicked().getInventory().getItemInMainHand(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
