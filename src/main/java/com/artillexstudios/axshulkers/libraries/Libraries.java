@@ -12,6 +12,10 @@ public enum Libraries {
             Relocation.builder().pattern("net{}kyori").relocatedPattern("com{}artillexstudios{}axshulkers{}libs{}adventure").build()
     ),
 
+    ADVENTURE_PLAIN("net{}kyori:adventure-text-serializer-plain:4.14.0",
+            Relocation.builder().pattern("net{}kyori").relocatedPattern("com{}artillexstudios{}axshulkers{}libs{}adventure").build()
+    ),
+
     ADVENTURE_GSON("net{}kyori:adventure-text-serializer-gson:4.14.0",
             Relocation.builder().pattern("net{}kyori").relocatedPattern("com{}artillexstudios{}axshulkers{}libs{}adventure").build()
     ),
@@ -28,9 +32,9 @@ public enum Libraries {
 
     BOOSTED_YAML("dev{}dejvokep:boosted-yaml:1.3"),
 
-    NBT_API("de{}tr7zw:item-nbt-api-plugin:2.11.3",
-        Relocation.builder().pattern("de{}tr7zw{}nbtapi{}utils").relocatedPattern("com{}artillexstudios{}axshulkers{}libs{}nbtapi").build()
-    ),
+//    NBT_API("de{}tr7zw:item-nbt-api-plugin:2.11.3",
+//        Relocation.builder().pattern("det{}tr7zwt{}changemet{}nbtapi").relocatedPattern("com{}artillexstudios{}axshulkers{}libs{}nbtapi").build()
+//    ),
 
 //    HIKARICP("com{}zaxxer:HikariCP:5.0.1",
 //        Relocation.builder().pattern("com{}zaxxer").relocatedPattern("com{}artillexstudios{}libs{}hikaricp").build()

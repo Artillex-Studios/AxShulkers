@@ -4,6 +4,7 @@ import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.utils.ColorUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +43,7 @@ public class Shulkerboxes {
                 AxShulkers.getDB().saveShulker(items, newUUID);
             });
 
-            final Inventory shulkerInv = Bukkit.createInventory(null, 27, ColorUtils.format(MESSAGES.getString("shulker-title")));
+            final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(MESSAGES.getString("shulker-title")));
             shulkerInv.setContents(items);
 
             final Shulkerbox shulkerbox = new Shulkerbox(newUUID, shulkerInv);
@@ -59,7 +60,7 @@ public class Shulkerboxes {
                 return getShulker(it);
             }
 
-            final Inventory shulkerInv = Bukkit.createInventory(null, 27, ColorUtils.format(MESSAGES.getString("shulker-title")));
+            final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(MESSAGES.getString("shulker-title")));
             shulkerInv.setContents(shulkerItems);
 
             final Shulkerbox shulkerbox = new Shulkerbox(uuid, shulkerInv);

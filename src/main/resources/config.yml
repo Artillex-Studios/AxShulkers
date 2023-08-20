@@ -14,10 +14,21 @@ enable-obsfucation: false
 # note: this is not required for security, you can leave it on 0 to disable
 open-cooldown-miliseconds: 0
 
+# list of items that CAN'T be put into shulker boxes
+# note: the name-contains string shouldn't include any color codes
+blacklisted-items:
+  "1":
+    material: "barrier"
+    name-contains: "Banned item's name"
+
+# worlds where player's can't open shulkers
+blacklisted-worlds:
+  - "name_of_world"
+
 # this setting is not reloadable, you have to restart the server
 database:
   # h2, sqlite
   type: "h2"
 
 # do not change this
-version: 1
+version: 2

@@ -19,6 +19,7 @@ public class Config implements AbstractConfig {
     public void setup() {
         try {
             file = YamlDocument.create(new File(AxShulkers.getInstance().getDataFolder(), "config.yml"), AxShulkers.getInstance().getResource("config.yml"), GeneralSettings.builder().setUseDefaults(false).build(), LoaderSettings.DEFAULT, DumperSettings.DEFAULT, UpdaterSettings.builder().setVersioning(new BasicVersioning("version")).build());
+            file.update();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -7,8 +7,12 @@ import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,6 +44,26 @@ public class InventoryClickListener implements Listener {
         }
 
         final ItemStack it = event.getClick() == ClickType.NUMBER_KEY ? event.getWhoClicked().getInventory().getItem(event.getHotbarButton()) : event.getCurrentItem();
+
+        if (!event.getWhoClicked().getOpenInventory().getTopInventory().equals(event.getClickedInventory())) {
+            for (String s : CONFIG.getSection("blacklisted-items").getRoutesAsStrings(false)) {
+                final Material mt = Material.getMaterial(CONFIG.getString("blacklisted-items." + s + ".material"));
+                if (it == null || mt != null && !mt.equals(it.getType())) continue;
+
+                if (CONFIG.getString("blacklisted-items." + s + ".name-contains") != null) {
+                    if (it.getItemMeta() == null) continue;
+                    if (it.getItemMeta().getDisplayName() == null) continue;
+
+                    if (!it.getItemMeta().getDisplayName().contains(CONFIG.getString("blacklisted-items." + s + ".name-contains"))) continue;
+                    event.setCancelled(true);
+                }
+
+                event.setCancelled(true);
+                MessageUtils.sendMsgP(event.getWhoClicked(), "errors.banned-item");
+                return;
+            }
+        }
+
         if (ShulkerUtils.isShulker(it)) event.setCancelled(true);
         if (ShulkerUtils.isShulker(event.getCurrentItem())) event.setCancelled(true);
 
@@ -81,9 +105,8 @@ public class InventoryClickListener implements Listener {
         MessageUtils.sendMsgP(event.getPlayer(), "close.message");
 
         if (!MESSAGES.getString("close.sound").isEmpty()) {
-            final Audience audience = Audience.audience((Audience) event.getPlayer());
             final Sound sound = Sound.sound(Key.key(MESSAGES.getString("close.sound")), Sound.Source.MASTER, 1f, 1f);
-            audience.playSound(sound);
+            BukkitAudiences.create(AxShulkers.getInstance()).player((Player) event.getPlayer()).playSound(sound);
         }
 
         ShulkerUtils.setShulkerContents(event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer().getOpenInventory().getTopInventory(), false);
