@@ -18,7 +18,12 @@ import com.artillexstudios.axshulkers.utils.ColorUtils;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.byteflux.libby.BukkitLibraryManager;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public final class AxShulkers extends JavaPlugin {
     private static AbstractConfig abstractConfig;
@@ -110,6 +115,14 @@ public final class AxShulkers extends JavaPlugin {
     public void onDisable() {
         for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
             AxShulkers.getDB().updateShulker(shulkerbox.getShulkerInventory().getContents(), shulkerbox.getUUID());
+
+            final List<HumanEntity> viewers = new ArrayList<>(shulkerbox.getShulkerInventory().getViewers());
+            final Iterator<HumanEntity> viewerIterator = viewers.iterator();
+
+            while (viewerIterator.hasNext()) {
+                viewerIterator.next().closeInventory();
+                viewerIterator.remove();
+            }
         }
 
         database.disable();

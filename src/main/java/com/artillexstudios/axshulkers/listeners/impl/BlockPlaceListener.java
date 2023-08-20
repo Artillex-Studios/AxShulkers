@@ -12,6 +12,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class BlockPlaceListener implements Listener {
 
     @EventHandler (ignoreCancelled = true)
@@ -24,8 +28,12 @@ public class BlockPlaceListener implements Listener {
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it);
             if (shulkerbox == null) return;
 
-            for (HumanEntity humanEntity : shulkerbox.getShulkerInventory().getViewers()) {
-                humanEntity.closeInventory();
+            final List<HumanEntity> viewers = new ArrayList<>(shulkerbox.getShulkerInventory().getViewers());
+            final Iterator<HumanEntity> viewerIterator = viewers.iterator();
+
+            while (viewerIterator.hasNext()) {
+                viewerIterator.next().closeInventory();
+                viewerIterator.remove();
             }
 
             ShulkerUtils.setShulkerContents(event.getBlockPlaced(), shulkerbox.getShulkerInventory());

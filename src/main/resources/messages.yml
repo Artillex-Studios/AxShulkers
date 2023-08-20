@@ -4,13 +4,13 @@ reloaded: "&#33FF33Successfully reloaded plugin!"
 cleared: "&#33FF33The shulker in your hand have been removed from the database!"
 cooldown: "&#FF3333You can't open shulkers for &f%seconds% &#FF3333seconds!"
 
-# list of sounds: https://www.digminecraft.com/lists/sound_list_pc.php
+# list of sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 open:
-  sound: "block.shulker_box.open"
+  sound: "BLOCK_SHULKER_BOX_OPEN"
   message: "&#33FF33You have opened a shulker box!"
 
 close:
-  sound: "block.shulker_box.close"
+  sound: "BLOCK_SHULKER_BOX_CLOSE"
   message: "&#FF3333You have closed a shulker box!"
 
 help:

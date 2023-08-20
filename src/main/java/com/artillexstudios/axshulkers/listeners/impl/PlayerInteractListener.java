@@ -1,12 +1,9 @@
 package com.artillexstudios.axshulkers.listeners.impl;
 
-import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.sound.Sound;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -43,8 +40,7 @@ public class PlayerInteractListener implements Listener {
         MessageUtils.sendMsgP(event.getPlayer(), "open.message");
 
         if (!MESSAGES.getString("open.sound").isEmpty()) {
-            final Sound sound = Sound.sound(Key.key(MESSAGES.getString("open.sound")), Sound.Source.MASTER, 1f, 1f);
-            BukkitAudiences.create(AxShulkers.getInstance()).player(event.getPlayer()).playSound(sound);
+            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.valueOf(MESSAGES.getString("open.sound")), 1f, 1f);
         }
 
         event.getPlayer().openInventory(Shulkerboxes.getShulker(event.getPlayer().getInventory().getItemInMainHand()).getShulkerInventory());
