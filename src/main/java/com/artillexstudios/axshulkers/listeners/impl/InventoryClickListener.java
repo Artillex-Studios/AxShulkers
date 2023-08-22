@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -23,15 +24,17 @@ import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 
 public class InventoryClickListener implements Listener {
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onClick(@NotNull InventoryClickEvent event) {
 
-        boolean isShulkerGui = false;
+        Shulkerbox shulker = null;
         for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
-            if (shulkerbox.getShulkerInventory().equals(event.getWhoClicked().getOpenInventory().getTopInventory())) isShulkerGui = true;
+            if (!shulkerbox.getShulkerInventory().equals(event.getWhoClicked().getOpenInventory().getTopInventory())) continue;
+
+            shulker = shulkerbox;
         }
 
-        if (!isShulkerGui) return;
+        if (shulker == null) return;
 
         if (!event.getWhoClicked().hasPermission("axshulkers.modify")) {
             event.setCancelled(true);
@@ -62,40 +65,46 @@ public class InventoryClickListener implements Listener {
         if (ShulkerUtils.isShulker(it)) event.setCancelled(true);
         if (ShulkerUtils.isShulker(event.getCurrentItem())) event.setCancelled(true);
 
+        Shulkerbox finalShulker = shulker;
         Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
-            ShulkerUtils.setShulkerContents(event.getWhoClicked().getInventory().getItemInMainHand(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
+            ShulkerUtils.setShulkerContents(finalShulker.getItem(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
         });
     }
 
     @EventHandler
     public void onDrag(@NotNull InventoryDragEvent event) {
 
-        boolean isShulkerGui = false;
+        Shulkerbox shulker = null;
         for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
-            if (shulkerbox.getShulkerInventory().equals(event.getWhoClicked().getOpenInventory().getTopInventory())) isShulkerGui = true;
+            if (!shulkerbox.getShulkerInventory().equals(event.getWhoClicked().getOpenInventory().getTopInventory())) continue;
+
+            shulker = shulkerbox;
         }
 
-        if (!isShulkerGui) return;
+        if (shulker == null) return;
 
         if (!event.getWhoClicked().hasPermission("axshulkers.modify")) {
             event.setCancelled(true);
             return;
         }
 
+        Shulkerbox finalShulker = shulker;
         Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
-            ShulkerUtils.setShulkerContents(event.getWhoClicked().getInventory().getItemInMainHand(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
+            ShulkerUtils.setShulkerContents(finalShulker.getItem(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
         });
     }
 
     @EventHandler
     public void onClose(@NotNull InventoryCloseEvent event) {
 
-        boolean isShulkerGui = false;
+        Shulkerbox shulker = null;
         for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
-            if (shulkerbox.getShulkerInventory().equals(event.getPlayer().getOpenInventory().getTopInventory())) isShulkerGui = true;
+            if (!shulkerbox.getShulkerInventory().equals(event.getPlayer().getOpenInventory().getTopInventory())) continue;
+
+            shulker = shulkerbox;
         }
 
-        if (!isShulkerGui) return;
+        if (shulker == null) return;
 
         MessageUtils.sendMsgP(event.getPlayer(), "close.message");
 
@@ -103,6 +112,6 @@ public class InventoryClickListener implements Listener {
             ((Player) event.getPlayer()).playSound(event.getPlayer().getLocation(), Sound.valueOf(MESSAGES.getString("close.sound")), 1f, 1f);
         }
 
-        ShulkerUtils.setShulkerContents(event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer().getOpenInventory().getTopInventory(), false);
+        ShulkerUtils.setShulkerContents(shulker.getItem(), event.getPlayer().getOpenInventory().getTopInventory(), false);
     }
 }

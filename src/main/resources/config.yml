@@ -14,6 +14,12 @@ enable-obsfucation: false
 # note: this is not required for security, you can leave it on 0 to disable
 open-cooldown-miliseconds: 0
 
+# should the shulker open when it gets right clicked in the player's inventory?
+opening-from-inventory:
+  enabled: true
+  # should this also be possible in the player's ender chest?
+  open-from-enderchest: true
+
 # list of items that CAN'T be put into shulker boxes
 # note: the name-contains string shouldn't include any color codes
 blacklisted-items:
@@ -31,4 +37,4 @@ database:
   type: "h2"
 
 # do not change this
-version: 2
+version: 3
