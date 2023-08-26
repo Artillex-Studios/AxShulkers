@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -61,7 +62,10 @@ public class Commands implements CommandExecutor {
                 return true;
             }
 
-            ShulkerUtils.setShulkerContents(it, Shulkerboxes.getShulker(it).getShulkerInventory(), true);
+            final ItemMeta meta = it.getItemMeta();
+            final String name = meta == null ? MESSAGES.getString("shulker-title") : meta.getDisplayName();
+
+            ShulkerUtils.setShulkerContents(it, Shulkerboxes.getShulker(it, name).getShulkerInventory(), true);
 
             ShulkerUtils.removeShulkerUUID(it);
             Shulkerboxes.removeShulkerbox(uuid);

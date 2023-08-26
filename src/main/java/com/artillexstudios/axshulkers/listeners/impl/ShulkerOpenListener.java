@@ -36,15 +36,28 @@ public class ShulkerOpenListener implements Listener {
         if (openShulker(player, player.getInventory().getItemInMainHand())) event.setCancelled(true);
     }
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.NORMAL)
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onShulkerClick(@NotNull InventoryClickEvent event) {
         if (!event.getClick().equals(ClickType.RIGHT)) return;
         if (!CONFIG.getBoolean("opening-from-inventory.enabled")) return;
 
         final Player player = (Player) event.getWhoClicked();
-        if (!event.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+        if (event.getClickedInventory() != null && !event.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
             if (!event.getClickedInventory().getType().equals(InventoryType.ENDER_CHEST)) return;
             if (!CONFIG.getBoolean("opening-from-inventory.open-from-enderchest")) return;
+        }
+
+        if (event.getView().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) {
+            for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
+                if (!shulkerbox.getShulkerInventory().equals(event.getView().getTopInventory())) continue;
+                if (!shulkerbox.getUUID().equals(ShulkerUtils.getShulkerUUID(event.getCurrentItem()))) continue;
+
+                event.setCancelled(true);
+                Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
+                    event.getWhoClicked().closeInventory();
+                });
+                return;
+            }
         }
 
         if (openShulker(player, event.getCurrentItem())) event.setCancelled(true);
@@ -64,17 +77,19 @@ public class ShulkerOpenListener implements Listener {
 
         cds.put(player, System.currentTimeMillis());
 
-        MessageUtils.sendMsgP(player, "open.message");
-
-        if (!MESSAGES.getString("open.sound").isEmpty()) {
-            player.playSound(player.getLocation(), Sound.valueOf(MESSAGES.getString("open.sound")), 1f, 1f);
-        }
+        final String name = ShulkerUtils.getShulkerName(it);
 
         Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
-            final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it);
+            final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
-            
+
             player.openInventory(shulkerbox.getShulkerInventory());
+
+            MessageUtils.sendMsgP(player, "open.message");
+
+            if (!MESSAGES.getString("open.sound").isEmpty()) {
+                player.playSound(player.getLocation(), Sound.valueOf(MESSAGES.getString("open.sound")), 1f, 1f);
+            }
         });
         return true;
     }

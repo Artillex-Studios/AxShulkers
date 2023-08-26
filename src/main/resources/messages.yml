@@ -21,6 +21,7 @@ help:
   - " "
 
 # name of the shulker gui
+# only used when the shulker doesn't have a custom name
 shulker-title: "&0Shulker Box"
 
 errors:

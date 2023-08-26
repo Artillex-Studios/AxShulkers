@@ -13,8 +13,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
-
 public class Shulkerboxes {
     private static final HashMap<UUID, Shulkerbox> shulkerboxMap = new HashMap<>();
 
@@ -31,7 +29,7 @@ public class Shulkerboxes {
     }
 
     @Nullable
-    public static Shulkerbox getShulker(@NotNull ItemStack it) {
+    public static Shulkerbox getShulker(@NotNull ItemStack it, @NotNull String name) {
         final UUID uuid = ShulkerUtils.getShulkerUUID(it);
 
         if (uuid == null) {
@@ -43,7 +41,7 @@ public class Shulkerboxes {
                 AxShulkers.getDB().saveShulker(items, newUUID);
             });
 
-            final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(MESSAGES.getString("shulker-title")));
+            final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(name));
             shulkerInv.setContents(items);
 
             final Shulkerbox shulkerbox = new Shulkerbox(newUUID, shulkerInv, it);
@@ -57,10 +55,10 @@ public class Shulkerboxes {
             final ItemStack[] shulkerItems = AxShulkers.getDB().getShulker(uuid);
             if (shulkerItems == null) {
                 ShulkerUtils.removeShulkerUUID(it);
-                return getShulker(it);
+                return getShulker(it, name);
             }
 
-            final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(MESSAGES.getString("shulker-title")));
+            final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(name));
             shulkerInv.setContents(shulkerItems);
 
             final Shulkerbox shulkerbox = new Shulkerbox(uuid, shulkerInv, it);

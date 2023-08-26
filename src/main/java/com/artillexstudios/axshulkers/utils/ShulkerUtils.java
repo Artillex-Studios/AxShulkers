@@ -7,12 +7,14 @@ import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
+import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 
 public class ShulkerUtils {
 
@@ -79,5 +81,14 @@ public class ShulkerUtils {
 
         shulker.getInventory().setContents(inventory.getContents());
         block.setBlockData(shulker.getBlockData());
+    }
+
+    public static String getShulkerName(@NotNull ItemStack it) {
+        final ItemMeta meta = it.getItemMeta();
+
+        if (meta == null) return MESSAGES.getString("shulker-title");
+        if (meta.getDisplayName() == null || meta.getDisplayName().isEmpty()) return MESSAGES.getString("shulker-title");
+
+        return meta.getDisplayName();
     }
 }

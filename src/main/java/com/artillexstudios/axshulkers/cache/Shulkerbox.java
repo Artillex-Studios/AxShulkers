@@ -1,11 +1,13 @@
 package com.artillexstudios.axshulkers.cache;
 
 import com.artillexstudios.axshulkers.utils.ColorUtils;
+import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -42,12 +44,26 @@ public class Shulkerbox {
         return it;
     }
 
-    public void setItem(@NotNull ItemStack it) {
-        this.it = it;
+    public void setItem(@NotNull ItemStack item) {
+        final String name = ShulkerUtils.getShulkerName(it);
+        final String name2 = ShulkerUtils.getShulkerName(item);
+
+        if (!name.equals(name2)) {
+            updateGuiTitle(name);
+        }
+
+        this.it = item;
     }
 
     public void updateGuiTitle() {
-        final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(MESSAGES.getString("shulker-title")));
+        final ItemMeta meta = it.getItemMeta();
+        final String name = meta == null ? MESSAGES.getString("shulker-title") : meta.getDisplayName();
+
+        updateGuiTitle(name);
+    }
+
+    public void updateGuiTitle(@NotNull String name) {
+        final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(name));
         shulkerInv.setContents(shulkerInventory.getContents());
 
         final List<HumanEntity> viewers = new ArrayList<>(shulkerInventory.getViewers());

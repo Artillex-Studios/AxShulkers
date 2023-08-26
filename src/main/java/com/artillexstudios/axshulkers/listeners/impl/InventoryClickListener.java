@@ -94,7 +94,7 @@ public class InventoryClickListener implements Listener {
         });
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onClose(@NotNull InventoryCloseEvent event) {
 
         Shulkerbox shulker = null;
