@@ -66,7 +66,7 @@ public class InventoryClickListener implements Listener {
         if (ShulkerUtils.isShulker(event.getCurrentItem())) event.setCancelled(true);
 
         Shulkerbox finalShulker = shulker;
-        Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
+        AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
             ShulkerUtils.setShulkerContents(finalShulker.getItem(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
         });
     }
@@ -89,7 +89,7 @@ public class InventoryClickListener implements Listener {
         }
 
         Shulkerbox finalShulker = shulker;
-        Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
+        AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
             ShulkerUtils.setShulkerContents(finalShulker.getItem(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
         });
     }

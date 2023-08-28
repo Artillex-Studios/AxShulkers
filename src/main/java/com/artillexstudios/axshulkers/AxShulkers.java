@@ -15,6 +15,7 @@ import com.artillexstudios.axshulkers.libraries.Libraries;
 import com.artillexstudios.axshulkers.listeners.RegisterListeners;
 import com.artillexstudios.axshulkers.schedulers.AutoSaveScheduler;
 import com.artillexstudios.axshulkers.utils.ColorUtils;
+import com.tcoded.folialib.FoliaLib;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.byteflux.libby.BukkitLibraryManager;
 import org.bstats.bukkit.Metrics;
@@ -33,6 +34,7 @@ public final class AxShulkers extends JavaPlugin {
     private static AxShulkers instance;
     private static DatabaseQueue databaseQueue;
     private static Database database;
+    private static FoliaLib foliaLib;
 
     public static AbstractConfig getAbstractConfig() {
         return abstractConfig;
@@ -54,6 +56,10 @@ public final class AxShulkers extends JavaPlugin {
         return databaseQueue;
     }
 
+    public static FoliaLib getFoliaLib() {
+        return foliaLib;
+    }
+
     @Override
     public void onLoad() {
         BukkitLibraryManager libraryManager = new BukkitLibraryManager(this, "libraries");
@@ -70,6 +76,8 @@ public final class AxShulkers extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        foliaLib = new FoliaLib(this);
 
         int pluginId = 19570;
         new Metrics(this, pluginId);

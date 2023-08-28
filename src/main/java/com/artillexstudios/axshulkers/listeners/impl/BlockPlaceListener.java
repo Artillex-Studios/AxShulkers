@@ -32,7 +32,7 @@ public class BlockPlaceListener implements Listener {
 
         final String name = ShulkerUtils.getShulkerName(it);
 
-        Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
+        AxShulkers.getFoliaLib().getImpl().runAtLocation(event.getBlockPlaced().getLocation(), () -> {
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
 
@@ -60,7 +60,9 @@ public class BlockPlaceListener implements Listener {
 
         final String name = ShulkerUtils.getShulkerName(it);
 
-        Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
+        Directional directional = (Directional) event.getBlock().getBlockData();
+
+        AxShulkers.getFoliaLib().getImpl().runAtLocation(event.getBlock().getRelative(directional.getFacing()).getLocation(), () -> {
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
 
@@ -71,8 +73,6 @@ public class BlockPlaceListener implements Listener {
                 viewerIterator.next().closeInventory();
                 viewerIterator.remove();
             }
-
-            Directional directional = (Directional) event.getBlock().getBlockData();
 
             ShulkerUtils.setShulkerContents(event.getBlock().getRelative(directional.getFacing()), shulkerbox.getShulkerInventory());
 

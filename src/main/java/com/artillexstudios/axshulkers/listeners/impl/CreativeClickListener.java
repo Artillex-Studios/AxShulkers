@@ -19,7 +19,7 @@ public class CreativeClickListener implements Listener {
     public void onClick(@NotNull InventoryCreativeEvent event) {
         final ArrayList<UUID> uuids = new ArrayList<>();
 
-        Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
+        AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
             for (ItemStack it : event.getWhoClicked().getInventory().getContents()) {
                 if (it == null) continue;
 

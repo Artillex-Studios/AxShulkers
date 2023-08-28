@@ -53,7 +53,7 @@ public class ShulkerOpenListener implements Listener {
                 if (!shulkerbox.getUUID().equals(ShulkerUtils.getShulkerUUID(event.getCurrentItem()))) continue;
 
                 event.setCancelled(true);
-                Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
+                AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
                     event.getWhoClicked().closeInventory();
                 });
                 return;
@@ -71,7 +71,9 @@ public class ShulkerOpenListener implements Listener {
         }
 
         if (cds.containsKey(player) && System.currentTimeMillis() - cds.get(player) < CONFIG.getLong("open-cooldown-miliseconds")) {
-            MessageUtils.sendMsgP(player, "cooldown", Map.of("%seconds%", Long.toString((CONFIG.getLong("open-cooldown-miliseconds") - System.currentTimeMillis() + cds.get(player)) / 1000L + 1)));
+            Map<String, String> map = new HashMap<>();
+            map.put("%seconds%", Long.toString((CONFIG.getLong("open-cooldown-miliseconds") - System.currentTimeMillis() + cds.get(player)) / 1000L + 1));
+            MessageUtils.sendMsgP(player, "cooldown", map);
             return false;
         }
 
@@ -79,7 +81,7 @@ public class ShulkerOpenListener implements Listener {
 
         final String name = ShulkerUtils.getShulkerName(it);
 
-        Bukkit.getScheduler().runTask(AxShulkers.getInstance(), () -> {
+        AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
 
