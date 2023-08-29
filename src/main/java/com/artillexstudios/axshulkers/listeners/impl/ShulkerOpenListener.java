@@ -42,8 +42,8 @@ public class ShulkerOpenListener implements Listener {
         if (!CONFIG.getBoolean("opening-from-inventory.enabled")) return;
 
         final Player player = (Player) event.getWhoClicked();
-        if (event.getClickedInventory() != null && !event.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
-            if (!event.getClickedInventory().getType().equals(InventoryType.ENDER_CHEST)) return;
+        if (event.getClickedInventory() != null && !event.getClickedInventory().equals(event.getWhoClicked().getInventory())) {
+            if (!event.getClickedInventory().equals(event.getWhoClicked().getEnderChest())) return;
             if (!CONFIG.getBoolean("opening-from-inventory.open-from-enderchest")) return;
         }
 
