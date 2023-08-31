@@ -10,13 +10,13 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Shulkerboxes {
-    private static final HashMap<UUID, Shulkerbox> shulkerboxMap = new HashMap<>();
+    private static final ConcurrentHashMap<UUID, Shulkerbox> shulkerboxMap = new ConcurrentHashMap<>();
 
-    public static HashMap<UUID, Shulkerbox> getShulkerMap() {
+    public static ConcurrentHashMap<UUID, Shulkerbox> getShulkerMap() {
         return shulkerboxMap;
     }
 
