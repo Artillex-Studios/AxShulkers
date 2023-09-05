@@ -61,6 +61,7 @@ public class ShulkerUtils {
     }
 
     public static void setShulkerContents(@NotNull ItemStack it, @NotNull Inventory inventory, boolean bypass) {
+        if (!(it.getItemMeta() instanceof BlockStateMeta)) return;
 
         final BlockStateMeta im = (BlockStateMeta) it.getItemMeta();
         final ShulkerBox shulker = (ShulkerBox) im.getBlockState();

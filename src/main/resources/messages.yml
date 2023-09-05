@@ -30,6 +30,7 @@ errors:
   creative-copy-item: "&#FF3333It looks like you have copied a shulker box, but no worries, we fixed it for you!"
   banned-item: "&#FF3333You can't put this item into shulker boxes!"
   blacklisted-world: "&#FF3333You can't open shulkers in this world!"
+  cant-run-commands: "&#FF3333You can't run commands while a shulker is open!"
 
 # do not change this
-version: 2
+version: 3

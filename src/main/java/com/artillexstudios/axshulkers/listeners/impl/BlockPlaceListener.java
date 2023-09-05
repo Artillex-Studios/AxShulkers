@@ -60,7 +60,7 @@ public class BlockPlaceListener implements Listener {
 
         final String name = ShulkerUtils.getShulkerName(it);
 
-        Directional directional = (Directional) event.getBlock().getBlockData();
+        final Directional directional = (Directional) event.getBlock().getBlockData();
 
         AxShulkers.getFoliaLib().getImpl().runAtLocation(event.getBlock().getRelative(directional.getFacing()).getLocation(), () -> {
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
