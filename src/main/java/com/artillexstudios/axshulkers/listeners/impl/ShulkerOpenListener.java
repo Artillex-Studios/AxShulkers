@@ -5,7 +5,6 @@ import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -65,6 +64,11 @@ public class ShulkerOpenListener implements Listener {
 
     private boolean openShulker(@NotNull Player player, @NotNull ItemStack it) {
         if (!ShulkerUtils.isShulker(it)) return false;
+
+        if (CONFIG.getBoolean("disable-shulker-opening")) {
+            return false;
+        }
+
         if (CONFIG.getStringList("blacklisted-worlds").contains(player.getWorld().getName())) {
             MessageUtils.sendMsgP(player, "errors.blacklisted-world");
             return false;

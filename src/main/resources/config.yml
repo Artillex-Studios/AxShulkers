@@ -20,6 +20,13 @@ opening-from-inventory:
   # should this also be possible in the player's ender chest?
   open-from-enderchest: true
 
+# if this is true then players won't be able to open shulkers from their hand
+disable-shulker-opening: false
+# if this is true then players won't be able to place them down (they can still open them)
+disable-shulker-placing: false
+# if this is true then dispensers won't place shulker boxes
+disable-shulker-dispensing: false
+
 # list of items that CAN'T be put into shulker boxes
 # note: the name-contains string shouldn't include any color codes
 blacklisted-items:
@@ -37,4 +44,4 @@ database:
   type: "h2"
 
 # do not change this
-version: 3
+version: 4

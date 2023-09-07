@@ -19,6 +19,7 @@ import com.tcoded.folialib.FoliaLib;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.byteflux.libby.BukkitLibraryManager;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -117,6 +118,7 @@ public final class AxShulkers extends JavaPlugin {
         this.getCommand("axshulkers").setExecutor(new Commands());
         this.getCommand("axshulkers").setTabCompleter(new TabComplete());
 
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.format("&#CC00FF[AxShulkers] Loaded plugin! Using &f" + database.getType() + " &#CC00FFdatabase to store data!"));
     }
 
     @Override
