@@ -5,6 +5,7 @@ import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -49,9 +50,8 @@ public class InventoryClickListener implements Listener {
 
                 if (CONFIG.getString("blacklisted-items." + s + ".name-contains") != null) {
                     if (it.getItemMeta() == null) continue;
-                    if (it.getItemMeta().getDisplayName() == null) continue;
-
                     if (!it.getItemMeta().getDisplayName().contains(CONFIG.getString("blacklisted-items." + s + ".name-contains"))) continue;
+
                     event.setCancelled(true);
                 }
 

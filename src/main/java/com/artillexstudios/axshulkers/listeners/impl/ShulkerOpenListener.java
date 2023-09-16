@@ -20,12 +20,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 
 public class ShulkerOpenListener implements Listener {
-    private final HashMap<Player, Long> cds = new HashMap<>();
+    private final HashMap<UUID, Long> cds = new HashMap<>();
 
     @EventHandler
     public void onInteract(@NotNull PlayerInteractEvent event) {
@@ -35,7 +36,7 @@ public class ShulkerOpenListener implements Listener {
         if (openShulker(player, player.getInventory().getItemInMainHand())) event.setCancelled(true);
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler (priority = EventPriority.LOW)
     public void onShulkerClick(@NotNull InventoryClickEvent event) {
         if (!event.getClick().equals(ClickType.RIGHT)) return;
         if (!CONFIG.getBoolean("opening-from-inventory.enabled")) return;
@@ -74,14 +75,14 @@ public class ShulkerOpenListener implements Listener {
             return false;
         }
 
-        if (cds.containsKey(player) && System.currentTimeMillis() - cds.get(player) < CONFIG.getLong("open-cooldown-miliseconds")) {
+        if (cds.containsKey(player.getUniqueId()) && System.currentTimeMillis() - cds.get(player.getUniqueId()) < CONFIG.getLong("open-cooldown-miliseconds")) {
             Map<String, String> map = new HashMap<>();
-            map.put("%seconds%", Long.toString((CONFIG.getLong("open-cooldown-miliseconds") - System.currentTimeMillis() + cds.get(player)) / 1000L + 1));
+            map.put("%seconds%", Long.toString((CONFIG.getLong("open-cooldown-miliseconds") - System.currentTimeMillis() + cds.get(player.getUniqueId())) / 1000L + 1));
             MessageUtils.sendMsgP(player, "cooldown", map);
             return false;
         }
 
-        cds.put(player, System.currentTimeMillis());
+        cds.put(player.getUniqueId(), System.currentTimeMillis());
 
         final String name = ShulkerUtils.getShulkerName(it);
 
@@ -89,7 +90,8 @@ public class ShulkerOpenListener implements Listener {
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
 
-            player.openInventory(shulkerbox.getShulkerInventory());
+            shulkerbox.setItem(it);
+            shulkerbox.openShulkerFor(player);
 
             MessageUtils.sendMsgP(player, "open.message");
 

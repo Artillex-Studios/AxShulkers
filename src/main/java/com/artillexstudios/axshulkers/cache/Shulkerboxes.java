@@ -44,7 +44,7 @@ public class Shulkerboxes {
             final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(name));
             shulkerInv.setContents(items);
 
-            final Shulkerbox shulkerbox = new Shulkerbox(newUUID, shulkerInv, it);
+            final Shulkerbox shulkerbox = new Shulkerbox(newUUID, shulkerInv, it, name);
             addShulkerbox(shulkerbox);
 
             return shulkerbox;
@@ -61,7 +61,7 @@ public class Shulkerboxes {
             final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(name));
             shulkerInv.setContents(shulkerItems);
 
-            final Shulkerbox shulkerbox = new Shulkerbox(uuid, shulkerInv, it);
+            final Shulkerbox shulkerbox = new Shulkerbox(uuid, shulkerInv, it, name);
             addShulkerbox(shulkerbox);
 
             return shulkerbox;

@@ -4,6 +4,7 @@ import com.artillexstudios.axshulkers.utils.ColorUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -21,17 +22,22 @@ public class Shulkerbox {
     private final UUID uuid;
     private Inventory shulkerInventory;
     private ItemStack it;
+    private String title;
 
-    public Shulkerbox(UUID uuid, Inventory shulkerInventory, ItemStack it) {
-
+    public Shulkerbox(UUID uuid, Inventory shulkerInventory, ItemStack it, String title) {
         this.uuid = uuid;
         this.shulkerInventory = shulkerInventory;
+        this.title = title;
         this.it = it;
     }
 
     @NotNull
     public Inventory getShulkerInventory() {
         return shulkerInventory;
+    }
+
+    public void openShulkerFor(@NotNull Player player) {
+        player.openInventory(shulkerInventory);
     }
 
     @NotNull
@@ -45,12 +51,9 @@ public class Shulkerbox {
     }
 
     public void setItem(@NotNull ItemStack item) {
-        final String name = ShulkerUtils.getShulkerName(it);
-        final String name2 = ShulkerUtils.getShulkerName(item);
+        final String name = ShulkerUtils.getShulkerName(item);
 
-        if (!name.equals(name2)) {
-            updateGuiTitle(name);
-        }
+        if (!name.equals(title)) updateGuiTitle(name);
 
         this.it = item;
     }
@@ -63,16 +66,18 @@ public class Shulkerbox {
     }
 
     public void updateGuiTitle(@NotNull String name) {
-        final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(name));
-        shulkerInv.setContents(shulkerInventory.getContents());
+        title = name;
 
         final List<HumanEntity> viewers = new ArrayList<>(shulkerInventory.getViewers());
-        this.shulkerInventory = shulkerInv;
-
         final Iterator<HumanEntity> viewerIterator = viewers.iterator();
 
+        final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(title));
+        shulkerInv.setContents(shulkerInventory.getContents());
+
+        this.shulkerInventory = shulkerInv;
+
         while (viewerIterator.hasNext()) {
-            viewerIterator.next().openInventory(shulkerInventory);
+            viewerIterator.next().closeInventory();
             viewerIterator.remove();
         }
     }
