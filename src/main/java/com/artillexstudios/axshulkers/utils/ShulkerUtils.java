@@ -1,5 +1,6 @@
 package com.artillexstudios.axshulkers.utils;
 
+import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,27 +37,32 @@ public class ShulkerUtils {
         if (it == null) return null;
         if (it.getType().equals(Material.AIR)) return null;
 
-        final NBTItem nbti = new NBTItem(it);
-        if (!nbti.hasTag("AxShulkers-UUID")) return null;
+        final String str = NBT.get(it, nbti -> {
+            return nbti.getString("AxShulkers-UUID");
+        });
 
-        return UUID.fromString(nbti.getString("AxShulkers-UUID"));
+        if (str.isEmpty()) return null;
+
+        return UUID.fromString(str);
     }
 
     public static void removeShulkerUUID(@NotNull ItemStack it) {
         final NBTItem nbti = new NBTItem(it);
         if (!nbti.hasTag("AxShulkers-UUID")) return;
 
-        nbti.removeKey("AxShulkers-UUID");
+        NBT.modify(it, nbt -> {
+            nbt.removeKey("AxShulkers-UUID");
+        });
         it.setItemMeta(nbti.getItem().getItemMeta());
     }
 
     @NotNull
     public static UUID addShulkerUUID(@NotNull ItemStack it) {
-        final NBTItem nbti = new NBTItem(it);
         final UUID uuid = UUID.randomUUID();
 
-        nbti.setString("AxShulkers-UUID", uuid.toString());
-        it.setItemMeta(nbti.getItem().getItemMeta());
+        NBT.modify(it, nbt -> {
+            nbt.setString("AxShulkers-UUID", uuid.toString());
+        });
         return uuid;
     }
 
