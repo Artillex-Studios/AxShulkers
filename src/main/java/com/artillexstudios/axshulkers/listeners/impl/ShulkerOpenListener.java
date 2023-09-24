@@ -30,6 +30,7 @@ public class ShulkerOpenListener implements Listener {
 
     @EventHandler
     public void onInteract(@NotNull PlayerInteractEvent event) {
+        if (ShulkerUtils.hasShulkerOpen(event.getPlayer()) != null) event.getPlayer().closeInventory();
         if (event.getAction() != Action.RIGHT_CLICK_AIR) return;
 
         final Player player = event.getPlayer();
@@ -64,11 +65,10 @@ public class ShulkerOpenListener implements Listener {
     }
 
     private boolean openShulker(@NotNull Player player, @NotNull ItemStack it) {
+        if (it.getAmount() < 1) return false;
         if (!ShulkerUtils.isShulker(it)) return false;
 
-        if (CONFIG.getBoolean("disable-shulker-opening")) {
-            return false;
-        }
+        if (CONFIG.getBoolean("disable-shulker-opening")) return false;
 
         if (CONFIG.getStringList("blacklisted-worlds").contains(player.getWorld().getName())) {
             MessageUtils.sendMsgP(player, "errors.blacklisted-world");

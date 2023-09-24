@@ -1,10 +1,12 @@
 package com.artillexstudios.axshulkers.utils;
 
+import com.artillexstudios.axshulkers.cache.Shulkerbox;
+import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import de.tr7zw.changeme.nbtapi.NBT;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
@@ -47,13 +49,9 @@ public class ShulkerUtils {
     }
 
     public static void removeShulkerUUID(@NotNull ItemStack it) {
-        final NBTItem nbti = new NBTItem(it);
-        if (!nbti.hasTag("AxShulkers-UUID")) return;
-
         NBT.modify(it, nbt -> {
             nbt.removeKey("AxShulkers-UUID");
         });
-        it.setItemMeta(nbti.getItem().getItemMeta());
     }
 
     @NotNull
@@ -83,7 +81,6 @@ public class ShulkerUtils {
     }
 
     public static void setShulkerContents(@NotNull Block block, @NotNull Inventory inventory) {
-
         final ShulkerBox shulker = (ShulkerBox) block.getState();
 
         shulker.getInventory().setContents(inventory.getContents());
@@ -94,8 +91,20 @@ public class ShulkerUtils {
         final ItemMeta meta = it.getItemMeta();
 
         if (meta == null) return MESSAGES.getString("shulker-title");
-        if (meta.getDisplayName() == null || meta.getDisplayName().isEmpty()) return MESSAGES.getString("shulker-title");
+        if (meta.getDisplayName().isEmpty()) return MESSAGES.getString("shulker-title");
 
         return meta.getDisplayName();
+    }
+
+    @Nullable
+    public static Shulkerbox hasShulkerOpen(@NotNull Player player) {
+        Shulkerbox shulker = null;
+        for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
+            if (!shulkerbox.getShulkerInventory().equals(player.getOpenInventory().getTopInventory())) continue;
+
+            shulker = shulkerbox;
+        }
+
+        return shulker;
     }
 }

@@ -46,9 +46,9 @@ public enum Libraries {
 
     SQLITE_JDBC("org{}xerial:sqlite-jdbc:3.42.0.0"),
 
-    H2_JDBC("com{}h2database:h2:2.1.214"),
+    H2_JDBC("com{}h2database:h2:2.1.214");
 
-    POSTGRESQL("org{}postgresql:postgresql:42.5.4");
+//    POSTGRESQL("org{}postgresql:postgresql:42.5.4");
 
     private final Library library;
 

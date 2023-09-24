@@ -2,10 +2,8 @@ package com.artillexstudios.axshulkers.listeners.impl;
 
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
-import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -27,13 +25,7 @@ public class InventoryClickListener implements Listener {
     @EventHandler (priority = EventPriority.LOWEST)
     public void onClick(@NotNull InventoryClickEvent event) {
 
-        Shulkerbox shulker = null;
-        for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
-            if (!shulkerbox.getShulkerInventory().equals(event.getWhoClicked().getOpenInventory().getTopInventory())) continue;
-
-            shulker = shulkerbox;
-        }
-
+        final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getWhoClicked());
         if (shulker == null) return;
 
         if (!event.getWhoClicked().hasPermission("axshulkers.modify")) {
@@ -64,22 +56,15 @@ public class InventoryClickListener implements Listener {
         if (ShulkerUtils.isShulker(it)) event.setCancelled(true);
         if (ShulkerUtils.isShulker(event.getCurrentItem())) event.setCancelled(true);
 
-        Shulkerbox finalShulker = shulker;
         AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
-            ShulkerUtils.setShulkerContents(finalShulker.getItem(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
+            ShulkerUtils.setShulkerContents(shulker.getItem(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
         });
     }
 
     @EventHandler
     public void onDrag(@NotNull InventoryDragEvent event) {
 
-        Shulkerbox shulker = null;
-        for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
-            if (!shulkerbox.getShulkerInventory().equals(event.getWhoClicked().getOpenInventory().getTopInventory())) continue;
-
-            shulker = shulkerbox;
-        }
-
+        final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getWhoClicked());
         if (shulker == null) return;
 
         if (!event.getWhoClicked().hasPermission("axshulkers.modify")) {
@@ -87,22 +72,15 @@ public class InventoryClickListener implements Listener {
             return;
         }
 
-        Shulkerbox finalShulker = shulker;
         AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
-            ShulkerUtils.setShulkerContents(finalShulker.getItem(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
+            ShulkerUtils.setShulkerContents(shulker.getItem(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
         });
     }
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onClose(@NotNull InventoryCloseEvent event) {
 
-        Shulkerbox shulker = null;
-        for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
-            if (!shulkerbox.getShulkerInventory().equals(event.getPlayer().getOpenInventory().getTopInventory())) continue;
-
-            shulker = shulkerbox;
-        }
-
+        final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getPlayer());
         if (shulker == null) return;
 
         MessageUtils.sendMsgP(event.getPlayer(), "close.message");
