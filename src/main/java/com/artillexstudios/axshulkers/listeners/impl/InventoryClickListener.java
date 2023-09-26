@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,40 +25,49 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onClick(@NotNull InventoryClickEvent event) {
+        final Player player = (Player) event.getWhoClicked();
 
-        final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getWhoClicked());
-        if (shulker == null) return;
+        final ItemStack it = event.getClick() == ClickType.NUMBER_KEY ? player.getInventory().getItem(event.getHotbarButton()) : event.getCurrentItem();
 
-        if (!event.getWhoClicked().hasPermission("axshulkers.modify")) {
-            event.setCancelled(true);
-            return;
-        }
-
-        final ItemStack it = event.getClick() == ClickType.NUMBER_KEY ? event.getWhoClicked().getInventory().getItem(event.getHotbarButton()) : event.getCurrentItem();
-
-        if (!event.getWhoClicked().getOpenInventory().getTopInventory().equals(event.getClickedInventory())) {
+        if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX) && !player.getOpenInventory().getTopInventory().equals(event.getClickedInventory())) {
             for (String s : CONFIG.getSection("blacklisted-items").getRoutesAsStrings(false)) {
-                final Material mt = Material.getMaterial(CONFIG.getString("blacklisted-items." + s + ".material"));
-                if (it == null || mt != null && !mt.equals(it.getType())) continue;
+                if (it == null) continue;
+                boolean banned = false;
+
+                if (CONFIG.getString("blacklisted-items." + s + ".material") != null) {
+                    final Material mt = Material.getMaterial(CONFIG.getString("blacklisted-items." + s + ".material").toUpperCase());
+                    if (mt == null) continue;
+                    if (!it.getType().equals(mt)) continue;
+                    banned = true;
+                }
 
                 if (CONFIG.getString("blacklisted-items." + s + ".name-contains") != null) {
                     if (it.getItemMeta() == null) continue;
                     if (!it.getItemMeta().getDisplayName().contains(CONFIG.getString("blacklisted-items." + s + ".name-contains"))) continue;
-
-                    event.setCancelled(true);
+                    banned = true;
                 }
 
-                event.setCancelled(true);
-                MessageUtils.sendMsgP(event.getWhoClicked(), "errors.banned-item");
-                return;
+                if (banned) {
+                    event.setCancelled(true);
+                    MessageUtils.sendMsgP(player, "errors.banned-item");
+                    return;
+                }
             }
+        }
+
+        final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen(player);
+        if (shulker == null) return;
+
+        if (!player.hasPermission("axshulkers.modify")) {
+            event.setCancelled(true);
+            return;
         }
 
         if (ShulkerUtils.isShulker(it)) event.setCancelled(true);
         if (ShulkerUtils.isShulker(event.getCurrentItem())) event.setCancelled(true);
 
         AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
-            ShulkerUtils.setShulkerContents(shulker.getItem(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
+            ShulkerUtils.setShulkerContents(shulker.getItem(), player.getOpenInventory().getTopInventory(), false);
         });
     }
 
