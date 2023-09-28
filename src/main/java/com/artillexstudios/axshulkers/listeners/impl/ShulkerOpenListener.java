@@ -61,6 +61,7 @@ public class ShulkerOpenListener implements Listener {
             }
         }
 
+        if (event.getCurrentItem() == null) return;
         if (openShulker(player, event.getCurrentItem())) event.setCancelled(true);
     }
 
