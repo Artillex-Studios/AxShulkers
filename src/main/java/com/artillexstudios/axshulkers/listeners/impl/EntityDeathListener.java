@@ -29,6 +29,12 @@ public class EntityDeathListener implements Listener {
         final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
         if (shulkerbox == null) return;
 
+        if (it.getAmount() != 1) {
+            it.setAmount(1);
+            event.setCancelled(true);
+            return;
+        }
+
         ShulkerUtils.setShulkerContents(it, shulkerbox.getShulkerInventory(), false);
     }
 

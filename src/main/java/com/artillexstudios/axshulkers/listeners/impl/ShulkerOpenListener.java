@@ -66,8 +66,11 @@ public class ShulkerOpenListener implements Listener {
     }
 
     private boolean openShulker(@NotNull Player player, @NotNull ItemStack it) {
-        if (it.getAmount() > 1) return false;
         if (!ShulkerUtils.isShulker(it)) return false;
+        if (it.getAmount() > 1) {
+            it.setAmount(1);
+            return false;
+        }
 
         if (CONFIG.getBoolean("disable-shulker-opening")) return false;
 

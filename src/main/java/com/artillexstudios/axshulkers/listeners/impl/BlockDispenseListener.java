@@ -31,6 +31,12 @@ public class BlockDispenseListener implements Listener {
             return;
         }
 
+        if (event.getItem().getAmount() != 1) {
+            event.getItem().setAmount(1);
+            event.setCancelled(true);
+            return;
+        }
+
         if (event.getBlock().getType().equals(Material.DROPPER))
             handleDropper(event);
         else
