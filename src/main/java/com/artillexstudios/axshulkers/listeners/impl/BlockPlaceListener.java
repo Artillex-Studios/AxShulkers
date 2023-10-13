@@ -4,13 +4,9 @@ import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.Directional;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -42,24 +38,22 @@ public class BlockPlaceListener implements Listener {
 
         final String name = ShulkerUtils.getShulkerName(it);
 
-        AxShulkers.getFoliaLib().getImpl().runAtLocation(event.getBlockPlaced().getLocation(), () -> {
-            final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
-            if (shulkerbox == null) return;
+        final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
+        if (shulkerbox == null) return;
 
-            final List<HumanEntity> viewers = new ArrayList<>(shulkerbox.getShulkerInventory().getViewers());
-            final Iterator<HumanEntity> viewerIterator = viewers.iterator();
+        final List<HumanEntity> viewers = new ArrayList<>(shulkerbox.getShulkerInventory().getViewers());
+        final Iterator<HumanEntity> viewerIterator = viewers.iterator();
 
-            while (viewerIterator.hasNext()) {
-                viewerIterator.next().closeInventory();
-                viewerIterator.remove();
-            }
+        while (viewerIterator.hasNext()) {
+            viewerIterator.next().closeInventory();
+            viewerIterator.remove();
+        }
 
-            ShulkerUtils.setShulkerContents(event.getBlockPlaced(), shulkerbox.getShulkerInventory());
+        ShulkerUtils.setShulkerContents(event.getBlockPlaced(), shulkerbox.getShulkerInventory());
 
-            AxShulkers.getDatabaseQueue().submit(() -> {
-                AxShulkers.getDB().removeShulker(shulkerbox.getUUID());
-                Shulkerboxes.removeShulkerbox(shulkerbox.getUUID());
-            });
+        AxShulkers.getDatabaseQueue().submit(() -> {
+            AxShulkers.getDB().removeShulker(shulkerbox.getUUID());
+            Shulkerboxes.removeShulkerbox(shulkerbox.getUUID());
         });
     }
 
