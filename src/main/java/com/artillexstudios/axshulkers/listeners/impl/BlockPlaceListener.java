@@ -49,11 +49,15 @@ public class BlockPlaceListener implements Listener {
             viewerIterator.remove();
         }
 
-        ShulkerUtils.setShulkerContents(event.getBlockPlaced(), shulkerbox.getShulkerInventory());
+        ShulkerUtils.clearShulkerContents(event.getBlockPlaced());
 
         AxShulkers.getDatabaseQueue().submit(() -> {
             AxShulkers.getDB().removeShulker(shulkerbox.getUUID());
             Shulkerboxes.removeShulkerbox(shulkerbox.getUUID());
+        });
+
+        AxShulkers.getFoliaLib().getImpl().runAtLocation(event.getBlockPlaced().getLocation(), () -> {
+            ShulkerUtils.setShulkerContents(event.getBlockPlaced(), shulkerbox.getShulkerInventory());
         });
     }
 

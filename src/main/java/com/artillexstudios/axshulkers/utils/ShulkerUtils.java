@@ -87,6 +87,13 @@ public class ShulkerUtils {
         block.setBlockData(shulker.getBlockData());
     }
 
+    public static void clearShulkerContents(@NotNull Block block) {
+        final ShulkerBox shulker = (ShulkerBox) block.getState();
+
+        shulker.getInventory().clear();
+        block.setBlockData(shulker.getBlockData());
+    }
+
     public static String getShulkerName(@NotNull ItemStack it) {
         final ItemMeta meta = it.getItemMeta();
 
