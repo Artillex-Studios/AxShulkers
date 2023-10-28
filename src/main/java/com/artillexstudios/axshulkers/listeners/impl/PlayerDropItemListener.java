@@ -3,6 +3,7 @@ package com.artillexstudios.axshulkers.listeners.impl;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -13,12 +14,14 @@ public class PlayerDropItemListener implements Listener {
 
     @EventHandler (ignoreCancelled = true)
     public void onDrop(@NotNull PlayerDropItemEvent event) {
-        final ItemStack it = event.getItemDrop().getItemStack();
+        ItemStack it = event.getItemDrop().getItemStack();
         if (!ShulkerUtils.isShulker(it)) return;
 
         final String name = ShulkerUtils.getShulkerName(it);
         final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
         if (shulkerbox == null) return;
+
+        it = shulkerbox.getItem();
 
         if (it.getAmount() != 1) {
             it.setAmount(1);
@@ -26,6 +29,7 @@ public class PlayerDropItemListener implements Listener {
         }
 
         ShulkerUtils.setShulkerContents(it, shulkerbox.getShulkerInventory(), false);
+        event.getItemDrop().setItemStack(it);
     }
 
 }

@@ -95,6 +95,7 @@ public class ShulkerOpenListener implements Listener {
             if (shulkerbox == null) return;
 
             shulkerbox.setItem(it);
+            shulkerbox.updateReference();
             shulkerbox.openShulkerFor(player);
 
             MessageUtils.sendMsgP(player, "open.message");

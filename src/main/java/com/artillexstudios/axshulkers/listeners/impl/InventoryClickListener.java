@@ -2,8 +2,10 @@ package com.artillexstudios.axshulkers.listeners.impl;
 
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
+import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -100,5 +102,13 @@ public class InventoryClickListener implements Listener {
         }
 
         ShulkerUtils.setShulkerContents(shulker.getItem(), event.getPlayer().getOpenInventory().getTopInventory(), false);
+
+        if (!CONFIG.getBoolean("auto-clear-shulkers", false)) return;
+
+        // don't clear the shulker if it changed
+        if (!shulker.getReference().get().equals(shulker.getItem())) return;
+        ShulkerUtils.removeShulkerUUID(shulker.getItem());
+        Shulkerboxes.removeShulkerbox(shulker.getUUID());
+        AxShulkers.getDB().removeShulker(shulker.getUUID());
     }
 }

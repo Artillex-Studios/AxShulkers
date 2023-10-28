@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,12 +24,14 @@ public class Shulkerbox {
     private Inventory shulkerInventory;
     private ItemStack it;
     private String title;
+    private WeakReference<ItemStack> reference;
 
     public Shulkerbox(UUID uuid, Inventory shulkerInventory, ItemStack it, String title) {
         this.uuid = uuid;
         this.shulkerInventory = shulkerInventory;
         this.title = title;
         this.it = it;
+        this.reference = new WeakReference<>(it);
     }
 
     @NotNull
@@ -48,6 +51,15 @@ public class Shulkerbox {
     @NotNull
     public ItemStack getItem() {
         return it;
+    }
+
+    @NotNull
+    public WeakReference<ItemStack> getReference() {
+        return reference;
+    }
+
+    public void updateReference() {
+        this.reference = new WeakReference<>(it);
     }
 
     public void setItem(@NotNull ItemStack item) {
