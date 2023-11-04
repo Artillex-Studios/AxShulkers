@@ -5,7 +5,6 @@ import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -35,6 +34,8 @@ public class InventoryClickListener implements Listener {
             for (String s : CONFIG.getSection("blacklisted-items").getRoutesAsStrings(false)) {
                 if (it == null) continue;
                 boolean banned = false;
+
+                if (ShulkerUtils.isShulker(it)) banned = true;
 
                 if (CONFIG.getString("blacklisted-items." + s + ".material") != null) {
                     final Material mt = Material.getMaterial(CONFIG.getString("blacklisted-items." + s + ".material").toUpperCase());
@@ -67,10 +68,6 @@ public class InventoryClickListener implements Listener {
 
         if (ShulkerUtils.isShulker(it)) event.setCancelled(true);
         if (ShulkerUtils.isShulker(event.getCurrentItem())) event.setCancelled(true);
-
-        AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
-            ShulkerUtils.setShulkerContents(shulker.getItem(), player.getOpenInventory().getTopInventory(), false);
-        });
     }
 
     @EventHandler
@@ -83,10 +80,6 @@ public class InventoryClickListener implements Listener {
             event.setCancelled(true);
             return;
         }
-
-        AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
-            ShulkerUtils.setShulkerContents(shulker.getItem(), event.getWhoClicked().getOpenInventory().getTopInventory(), false);
-        });
     }
 
     @EventHandler (priority = EventPriority.LOWEST)

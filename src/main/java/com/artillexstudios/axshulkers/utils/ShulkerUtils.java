@@ -80,6 +80,18 @@ public class ShulkerUtils {
         it.setItemMeta(im);
     }
 
+    public static void clearShulkerContents(@NotNull ItemStack it) {
+        if (!(it.getItemMeta() instanceof BlockStateMeta)) return;
+
+        final BlockStateMeta im = (BlockStateMeta) it.getItemMeta();
+        final ShulkerBox shulker = (ShulkerBox) im.getBlockState();
+
+        shulker.getInventory().clear();
+
+        im.setBlockState(shulker);
+        it.setItemMeta(im);
+    }
+
     public static void setShulkerContents(@NotNull Block block, @NotNull Inventory inventory) {
         final ShulkerBox shulker = (ShulkerBox) block.getState();
 
