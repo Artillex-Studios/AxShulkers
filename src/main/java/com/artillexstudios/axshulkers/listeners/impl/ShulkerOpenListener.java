@@ -89,11 +89,12 @@ public class ShulkerOpenListener implements Listener {
         cds.put(player.getUniqueId(), System.currentTimeMillis());
 
         final String name = ShulkerUtils.getShulkerName(it);
-        ShulkerUtils.clearShulkerContents(it);
 
         AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
+
+            ShulkerUtils.clearShulkerContents(it);
 
             shulkerbox.setItem(it);
             shulkerbox.updateReference();
