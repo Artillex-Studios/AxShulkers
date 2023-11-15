@@ -61,6 +61,7 @@ public class BlockDispenseListener implements Listener {
         if (!facingBlock.getType().equals(Material.AIR)) return;
 
         AxShulkers.getFoliaLib().getImpl().runAtLocation(facingBlock.getLocation(), () -> {
+            ShulkerUtils.clearShulkerContents(event.getBlock());
 
             final String name = ShulkerUtils.getShulkerName(it);
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
