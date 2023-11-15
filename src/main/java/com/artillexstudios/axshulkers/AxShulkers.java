@@ -126,13 +126,7 @@ public final class AxShulkers extends JavaPlugin {
         for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
             AxShulkers.getDB().updateShulker(shulkerbox.getShulkerInventory().getContents(), shulkerbox.getUUID());
 
-            final List<HumanEntity> viewers = new ArrayList<>(shulkerbox.getShulkerInventory().getViewers());
-            final Iterator<HumanEntity> viewerIterator = viewers.iterator();
-
-            while (viewerIterator.hasNext()) {
-                viewerIterator.next().closeInventory();
-                viewerIterator.remove();
-            }
+            shulkerbox.close();
         }
 
         database.disable();

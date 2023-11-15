@@ -41,13 +41,7 @@ public class BlockPlaceListener implements Listener {
         final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
         if (shulkerbox == null) return;
 
-        final List<HumanEntity> viewers = new ArrayList<>(shulkerbox.getShulkerInventory().getViewers());
-        final Iterator<HumanEntity> viewerIterator = viewers.iterator();
-
-        while (viewerIterator.hasNext()) {
-            viewerIterator.next().closeInventory();
-            viewerIterator.remove();
-        }
+        shulkerbox.close();
 
         ShulkerUtils.clearShulkerContents(event.getBlockPlaced());
 

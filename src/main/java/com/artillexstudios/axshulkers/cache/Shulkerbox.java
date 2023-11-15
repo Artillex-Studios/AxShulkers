@@ -93,4 +93,14 @@ public class Shulkerbox {
             viewerIterator.remove();
         }
     }
+
+    public void close() {
+        final List<HumanEntity> viewers = new ArrayList<>(shulkerInventory.getViewers());
+        final Iterator<HumanEntity> viewerIterator = viewers.iterator();
+
+        while (viewerIterator.hasNext()) {
+            viewerIterator.next().closeInventory();
+            viewerIterator.remove();
+        }
+    }
 }
