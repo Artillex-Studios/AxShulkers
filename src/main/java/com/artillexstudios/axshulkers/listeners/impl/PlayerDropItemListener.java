@@ -19,6 +19,7 @@ public class PlayerDropItemListener implements Listener {
         final String name = ShulkerUtils.getShulkerName(it);
         final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
         if (shulkerbox == null) return;
+        shulkerbox.close();
 
         it = shulkerbox.getItem();
 
