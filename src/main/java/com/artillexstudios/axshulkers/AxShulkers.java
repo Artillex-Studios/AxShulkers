@@ -20,12 +20,7 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import net.byteflux.libby.BukkitLibraryManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public final class AxShulkers extends JavaPlugin {
     private static AbstractConfig abstractConfig;
