@@ -6,7 +6,7 @@
 
   <groupId>com.artillexstudios</groupId>
   <artifactId>AxShulkers</artifactId>
-  <version>1.5.6</version>
+  <version>1.6.0</version>
   <packaging>jar</packaging>
 
   <name>AxShulkers</name>
@@ -185,4 +185,11 @@
           <scope>compile</scope>
       </dependency>
   </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>Artillex-Studios</id>
+            <url>https://repo.artillex-studios.com/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>

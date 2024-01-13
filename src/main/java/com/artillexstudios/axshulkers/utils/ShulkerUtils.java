@@ -26,6 +26,7 @@ public class ShulkerUtils {
         return it.getType().toString().contains("SHULKER_BOX");
     }
 
+    @NotNull
     public static ItemStack[] getShulkerItems(@NotNull ItemStack it) {
         final BlockStateMeta im = (BlockStateMeta) it.getItemMeta();
         final ShulkerBox shulker = (ShulkerBox) im.getBlockState();

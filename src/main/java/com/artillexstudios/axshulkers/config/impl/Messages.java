@@ -19,7 +19,7 @@ public class Messages implements AbstractConfig {
     public void setup() {
 
         try {
-            file = YamlDocument.create(new File(AxShulkers.getInstance().getDataFolder(), "messages.yml"), AxShulkers.getInstance().getResource("messages.yml"), GeneralSettings.builder().setUseDefaults(false).build(), LoaderSettings.DEFAULT, DumperSettings.DEFAULT, UpdaterSettings.builder().setVersioning(new BasicVersioning("version")).build());
+            file = YamlDocument.create(new File(AxShulkers.getInstance().getDataFolder(), "messages.yml"), AxShulkers.getInstance().getResource("messages.yml"), GeneralSettings.builder().setUseDefaults(false).build(), LoaderSettings.DEFAULT, DumperSettings.DEFAULT, UpdaterSettings.builder().setKeepAll(true).setVersioning(new BasicVersioning("version")).build());
             file.update();
         } catch (Exception ex) {
             ex.printStackTrace();

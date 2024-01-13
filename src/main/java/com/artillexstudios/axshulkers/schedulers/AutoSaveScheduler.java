@@ -10,11 +10,12 @@ import java.util.concurrent.TimeUnit;
 public class AutoSaveScheduler {
 
     public void start() {
+        final int backupMinutes = AxShulkers.CONFIG.getInt("auto-save-minutes", 5);
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
                 AxShulkers.getDB().updateShulker(shulkerbox.getShulkerInventory().getContents(), shulkerbox.getUUID());
             }
-        }, AxShulkers.CONFIG.getLong("auto-save-minutes"), AxShulkers.CONFIG.getLong("auto-save-minutes"), TimeUnit.MINUTES);
+        }, backupMinutes, backupMinutes, TimeUnit.MINUTES);
     }
 }

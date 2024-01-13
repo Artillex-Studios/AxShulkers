@@ -8,6 +8,7 @@ auto-save-minutes: 5
 # if this is on, the plugin won't save items to the shulker item
 # this makes it impossible to see what is in the shulker without opening it
 # note: this will break the shulker peeking functionality in plugins (like in auction houses or [item] plugins)
+# incompatible with auto-clear-shulkers
 enable-obsfucation: false
 
 # how often should people be able to peek in shulker boxes
@@ -30,10 +31,11 @@ disable-shulker-dispensing: false
 # if this is true then shulkers will be immune to cactus, lava, fire, etc..
 undestoryable-shulkers: false
 
-# EXPERIMENTAL: enabling this may cause dupes, desync, item loss, etc; if you find anything please report it!
-# automatically clears shulkers, so you never have to worry about shared inventories
+# automatically clears the UUID from shulkers, so you never have to worry about shared inventories
+# clearing does not mean clearing the inventory of the shulker, but it means that we only store opened shulkers in memory
+# and when you close them, we delete the shulker from the database/ram
 # this also force disables 'enable-obsfucation'
-auto-clear-shulkers: false
+auto-clear-shulkers: true
 
 # list of items that CAN'T be put into shulker boxes
 # note: the name-contains string shouldn't include any color codes
