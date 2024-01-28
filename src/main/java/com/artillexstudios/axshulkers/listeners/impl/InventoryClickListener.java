@@ -5,7 +5,6 @@ import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +29,7 @@ public class InventoryClickListener implements Listener {
 
         final ItemStack it = event.getClick() == ClickType.NUMBER_KEY ? player.getInventory().getItem(event.getHotbarButton()) : event.getCurrentItem();
 
-        if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX) && !player.getOpenInventory().getTopInventory().equals(event.getClickedInventory())) {
+        if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX) && (event.getClick() == ClickType.NUMBER_KEY || !player.getOpenInventory().getTopInventory().equals(event.getClickedInventory()))) {
             for (String s : CONFIG.getSection("blacklisted-items").getRoutesAsStrings(false)) {
                 if (it == null) continue;
                 boolean banned = false;
@@ -38,9 +37,7 @@ public class InventoryClickListener implements Listener {
                 if (ShulkerUtils.isShulker(it)) banned = true;
 
                 if (CONFIG.getString("blacklisted-items." + s + ".material") != null) {
-                    final Material mt = Material.getMaterial(CONFIG.getString("blacklisted-items." + s + ".material").toUpperCase());
-                    if (mt == null) continue;
-                    if (!it.getType().equals(mt)) continue;
+                    if (!it.getType().toString().equalsIgnoreCase(CONFIG.getString("blacklisted-items." + s + ".material"))) continue;
                     banned = true;
                 }
 
