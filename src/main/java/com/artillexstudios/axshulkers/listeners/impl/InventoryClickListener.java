@@ -5,6 +5,7 @@ import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -93,9 +94,9 @@ public class InventoryClickListener implements Listener {
 
         ShulkerUtils.setShulkerContents(shulker.getItem(), event.getPlayer().getOpenInventory().getTopInventory(), false);
 
-        if (!CONFIG.getBoolean("auto-clear-shulkers", false)) return;
+        if (!CONFIG.getBoolean("auto-clear-shulkers", false) && !(CONFIG.getBoolean("auto-clear-in-creative", true) && event.getPlayer().getGameMode().equals(GameMode.CREATIVE))) return;
 
-        // don't clear the shulker if it changed
+        // don't clear the shulker if it has changed
         if (!shulker.getReference().get().equals(shulker.getItem())) return;
         ShulkerUtils.removeShulkerUUID(shulker.getItem());
         Shulkerboxes.removeShulkerbox(shulker.getUUID());

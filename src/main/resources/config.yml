@@ -31,11 +31,17 @@ disable-shulker-dispensing: false
 # if this is true then shulkers will be immune to cactus, lava, fire, etc..
 undestoryable-shulkers: false
 
+# EXPERIEMENTAL, may cause dupes/item loss
 # automatically clears the UUID from shulkers, so you never have to worry about shared inventories
 # clearing does not mean clearing the inventory of the shulker, but it means that we only store opened shulkers in memory
 # and when you close them, we delete the shulker from the database/ram
 # this also force disables 'enable-obsfucation'
-auto-clear-shulkers: true
+auto-clear-shulkers: false
+
+# when in creative mode, the plugin will not modify any of the shulkers
+# note that this probably allows some dupes in creative mode, of course in creative you can already duplicate items so shouldn't be a big deal
+# this is the same feature as auto-clear-shulkers, however this only affects creative mode
+auto-clear-in-creative: true
 
 # list of items that CAN'T be put into shulker boxes
 # note: the name-contains string shouldn't include any color codes
@@ -54,4 +60,4 @@ database:
   type: "h2"
 
 # do not change this
-version: 6
+version: 7

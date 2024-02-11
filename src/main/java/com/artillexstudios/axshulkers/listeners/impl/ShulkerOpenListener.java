@@ -66,6 +66,7 @@ public class ShulkerOpenListener implements Listener {
     }
 
     private boolean openShulker(@NotNull Player player, @NotNull ItemStack it) {
+        if (!player.hasPermission("axshulkers.use")) return false;
         if (!ShulkerUtils.isShulker(it)) return false;
         if (it.getAmount() > 1) {
             it.setAmount(1);
@@ -91,6 +92,7 @@ public class ShulkerOpenListener implements Listener {
         final String name = ShulkerUtils.getShulkerName(it);
 
         AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
+            if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) return;
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
 

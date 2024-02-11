@@ -17,3 +17,5 @@ permissions:
     default: op
   axshulkers.modify:
     default: true
+  axshulkers.use:
+    default: true
