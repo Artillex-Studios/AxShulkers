@@ -39,7 +39,7 @@ undestoryable-shulkers: false
 auto-clear-shulkers: false
 
 # when in creative mode, the plugin will not modify any of the shulkers
-# note that this probably allows some dupes in creative mode, of course in creative you can already duplicate items so shouldn't be a big deal
+# note that this probably allows some dupes in creative mode, of course in creative you can already duplicate items so it shouldn't be a big deal
 # this is the same feature as auto-clear-shulkers, however this only affects creative mode
 auto-clear-in-creative: true
 

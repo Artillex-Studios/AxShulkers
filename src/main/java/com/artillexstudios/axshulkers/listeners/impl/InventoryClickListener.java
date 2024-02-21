@@ -3,6 +3,7 @@ package com.artillexstudios.axshulkers.listeners.impl;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
+import com.artillexstudios.axshulkers.utils.BlackListUtils;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import org.bukkit.GameMode;
@@ -12,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -28,27 +30,18 @@ public class InventoryClickListener implements Listener {
     public void onClick(@NotNull InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
 
-        final ItemStack it = event.getClick() == ClickType.NUMBER_KEY ? player.getInventory().getItem(event.getHotbarButton()) : event.getCurrentItem();
+        ItemStack it = event.getClick() == ClickType.NUMBER_KEY ? player.getInventory().getItem(event.getHotbarButton()) : event.getCurrentItem();
 
-        if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX) && (event.getClick() == ClickType.NUMBER_KEY || !player.getOpenInventory().getTopInventory().equals(event.getClickedInventory()))) {
-            for (String s : CONFIG.getSection("blacklisted-items").getRoutesAsStrings(false)) {
-                if (it == null) continue;
-                boolean banned = false;
-
-                if (ShulkerUtils.isShulker(it)) banned = true;
-
-                if (CONFIG.getString("blacklisted-items." + s + ".material") != null) {
-                    if (!it.getType().toString().equalsIgnoreCase(CONFIG.getString("blacklisted-items." + s + ".material"))) continue;
-                    banned = true;
+        if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) {
+            if (event.getClick().equals(ClickType.NUMBER_KEY)
+                    || event.getAction().equals(InventoryAction.HOTBAR_SWAP)
+                    || !player.getOpenInventory().getTopInventory().equals(event.getClickedInventory())
+            ) {
+                if (event.getAction().equals(InventoryAction.HOTBAR_SWAP)) {
+                    it = event.getWhoClicked().getInventory().getItemInOffHand();
                 }
 
-                if (CONFIG.getString("blacklisted-items." + s + ".name-contains") != null) {
-                    if (it.getItemMeta() == null) continue;
-                    if (!it.getItemMeta().getDisplayName().contains(CONFIG.getString("blacklisted-items." + s + ".name-contains"))) continue;
-                    banned = true;
-                }
-
-                if (banned) {
+                if (BlackListUtils.isBlackListed(it)) {
                     event.setCancelled(true);
                     MessageUtils.sendMsgP(player, "errors.banned-item");
                     return;

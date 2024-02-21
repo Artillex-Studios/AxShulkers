@@ -35,7 +35,7 @@ public class EntityDeathListener implements Listener {
             return;
         }
 
-        ShulkerUtils.setShulkerContents(it, shulkerbox.getShulkerInventory(), false);
+        ShulkerUtils.setShulkerContents(it, shulkerbox.getShulkerInventory(), true);
     }
 
 }
