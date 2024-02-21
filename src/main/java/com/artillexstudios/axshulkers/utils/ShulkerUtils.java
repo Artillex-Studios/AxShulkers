@@ -71,7 +71,7 @@ public class ShulkerUtils {
         final BlockStateMeta im = (BlockStateMeta) it.getItemMeta();
         final ShulkerBox shulker = (ShulkerBox) im.getBlockState();
 
-        if (!bypass && CONFIG.getBoolean("enable-obsfucation", true) && !CONFIG.getBoolean("auto-clear-shulkers", false)) {
+        if (!bypass && CONFIG.getBoolean("enable-obfuscation", false) && !CONFIG.getBoolean("auto-clear-shulkers", false)) {
             shulker.getInventory().clear();
         } else {
             shulker.getInventory().setContents(inventory.getContents());

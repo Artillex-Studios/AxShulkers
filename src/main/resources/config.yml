@@ -9,7 +9,7 @@ auto-save-minutes: 5
 # this makes it impossible to see what is in the shulker without opening it
 # note: this will break the shulker peeking functionality in plugins (like in auction houses or [item] plugins)
 # incompatible with auto-clear-shulkers
-enable-obsfucation: false
+enable-obfuscation: false
 
 # how often should people be able to peek in shulker boxes
 # note: this is not required for security, you can leave it on 0 to disable
@@ -35,7 +35,7 @@ undestoryable-shulkers: false
 # automatically clears the UUID from shulkers, so you never have to worry about shared inventories
 # clearing does not mean clearing the inventory of the shulker, but it means that we only store opened shulkers in memory
 # and when you close them, we delete the shulker from the database/ram
-# this also force disables 'enable-obsfucation'
+# this also force disables 'enable-obfuscation'
 auto-clear-shulkers: false
 
 # when in creative mode, the plugin will not modify any of the shulkers
@@ -60,4 +60,4 @@ database:
   type: "h2"
 
 # do not change this
-version: 7
+version: 8
