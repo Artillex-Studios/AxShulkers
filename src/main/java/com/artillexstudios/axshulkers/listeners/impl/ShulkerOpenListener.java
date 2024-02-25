@@ -94,7 +94,7 @@ public class ShulkerOpenListener implements Listener {
 
         final String name = ShulkerUtils.getShulkerName(it);
 
-        AxShulkers.getFoliaLib().getImpl().runNextTick(() -> {
+        AxShulkers.getFoliaLib().getImpl().runAtLocation(player.getLocation(), () -> {
             if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) return;
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
