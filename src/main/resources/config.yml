@@ -43,6 +43,17 @@ auto-clear-shulkers: false
 # this is the same feature as auto-clear-shulkers, however this only affects creative mode
 auto-clear-in-creative: true
 
+# if enabled and somehow a shulker has a uuid, but it is not in the database, the contents of that shulker will be removed
+# this also required to prevent incompatibility with third party plugins
+# the only reason you should disable this is if you decided to delete the axshulkers database without resetting players' shulkers
+delete-invalid-items: true
+
+# what should the nbt that the plugin places on shulkers be named?
+# note that the plugin will not clean up old ones, so changing this is not recommended
+# changing this while the server is running can lead to dupes
+# if you have deleted the axshulkers database without deleting the items, it is recommended to change this to avoid item loss
+nbt-tag: "AxShulkers-UUID"
+
 # list of items that CAN'T be put into shulker boxes
 # note: the name-contains string shouldn't include any color codes
 blacklisted-items:
@@ -60,4 +71,4 @@ database:
   type: "h2"
 
 # do not change this
-version: 8
+version: 9

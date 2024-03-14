@@ -41,7 +41,7 @@ public class ShulkerUtils {
         if (it.getType().equals(Material.AIR)) return null;
 
         final String str = NBT.get(it, nbti -> {
-            return nbti.getString("AxShulkers-UUID");
+            return nbti.getString(CONFIG.getString("nbt-tag"));
         });
 
         if (str.isEmpty()) return null;
@@ -51,7 +51,7 @@ public class ShulkerUtils {
 
     public static void removeShulkerUUID(@NotNull ItemStack it) {
         NBT.modify(it, nbt -> {
-            nbt.removeKey("AxShulkers-UUID");
+            nbt.removeKey(CONFIG.getString("nbt-tag"));
         });
     }
 
@@ -60,7 +60,7 @@ public class ShulkerUtils {
         final UUID uuid = UUID.randomUUID();
 
         NBT.modify(it, nbt -> {
-            nbt.setString("AxShulkers-UUID", uuid.toString());
+            nbt.setString(CONFIG.getString("nbt-tag"), uuid.toString());
         });
         return uuid;
     }

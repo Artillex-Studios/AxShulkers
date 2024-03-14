@@ -3,7 +3,6 @@ package com.artillexstudios.axshulkers.database.impl;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.database.Database;
 import com.artillexstudios.axshulkers.utils.SerializationUtils;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.h2.jdbc.JdbcConnection;
 import org.jetbrains.annotations.NotNull;
@@ -45,9 +44,9 @@ public class H2 implements Database {
 
     @Override
     public void saveShulker(@NotNull ItemStack[] items, @NotNull UUID uuid) {
-        final String txt = "INSERT INTO `axshulkers_data`(`uuid`, `inventory`) VALUES (?,?);";
+        final String sql = "INSERT INTO `axshulkers_data`(`uuid`, `inventory`) VALUES (?,?);";
 
-        try (PreparedStatement stmt = conn.prepareStatement(txt)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, uuid.toString());
             stmt.setString(2, SerializationUtils.invToBase64(items));
             stmt.executeUpdate();
@@ -58,9 +57,9 @@ public class H2 implements Database {
 
     @Override
     public void updateShulker(@NotNull ItemStack[] items, @NotNull UUID uuid) {
-        final String txt = "UPDATE `axshulkers_data` SET `inventory`= ? WHERE `uuid` = ?";
+        final String sql = "UPDATE `axshulkers_data` SET `inventory`= ? WHERE `uuid` = ?";
 
-        try (PreparedStatement stmt = conn.prepareStatement(txt)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(2, uuid.toString());
             stmt.setString(1, SerializationUtils.invToBase64(items));
             stmt.executeUpdate();
@@ -72,9 +71,9 @@ public class H2 implements Database {
     @Override
     @Nullable
     public ItemStack[] getShulker(@NotNull UUID uuid) {
-        final String txt = "SELECT `inventory` FROM `axshulkers_data` WHERE `uuid` = ?;";
+        final String sql = "SELECT `inventory` FROM `axshulkers_data` WHERE `uuid` = ?;";
 
-        try (PreparedStatement stmt = conn.prepareStatement(txt)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, uuid.toString());
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -91,9 +90,9 @@ public class H2 implements Database {
 
     @Override
     public void removeShulker(@NotNull UUID uuid) {
-        final String txt = "DELETE FROM `axshulkers_data` WHERE `uuid` = ?;";
+        final String sql = "DELETE FROM `axshulkers_data` WHERE `uuid` = ?;";
 
-        try (PreparedStatement stmt = conn.prepareStatement(txt)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, uuid.toString());
             stmt.executeUpdate();
 
@@ -104,7 +103,9 @@ public class H2 implements Database {
 
     @Override
     public void disable() {
-        try {
+        final String sql = "SHUTDOWN COMPACT;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.executeUpdate();
             conn.close();
         } catch (Exception ex) {
             ex.printStackTrace();

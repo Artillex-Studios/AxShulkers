@@ -13,6 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
+
 public class Shulkerboxes {
     private static final ConcurrentHashMap<UUID, Shulkerbox> shulkerboxMap = new ConcurrentHashMap<>();
 
@@ -54,6 +56,8 @@ public class Shulkerboxes {
             // load into ram from db
             final ItemStack[] shulkerItems = AxShulkers.getDB().getShulker(uuid);
             if (shulkerItems == null) {
+                if (CONFIG.getBoolean("delete-invalid-items", true))
+                    ShulkerUtils.clearShulkerContents(it);
                 ShulkerUtils.removeShulkerUUID(it);
                 return getShulker(it, name);
             }

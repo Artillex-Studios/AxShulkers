@@ -101,7 +101,9 @@ public class SQLite implements Database {
 
     @Override
     public void disable() {
-        try {
+        final String sql = "VACUUM;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.executeUpdate();
             conn.close();
         } catch (Exception ex) {
             ex.printStackTrace();
