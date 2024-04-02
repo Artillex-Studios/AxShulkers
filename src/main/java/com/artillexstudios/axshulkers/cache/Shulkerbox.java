@@ -72,7 +72,7 @@ public class Shulkerbox {
 
     public void updateGuiTitle() {
         final ItemMeta meta = it.getItemMeta();
-        final String name = meta == null ? MESSAGES.getString("shulker-title") : meta.getDisplayName();
+        final String name = meta == null ? ColorUtils.format(MESSAGES.getString("shulker-title")) : meta.getDisplayName();
 
         updateGuiTitle(name);
     }

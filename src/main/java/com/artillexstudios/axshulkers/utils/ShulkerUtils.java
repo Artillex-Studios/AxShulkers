@@ -110,8 +110,7 @@ public class ShulkerUtils {
     public static String getShulkerName(@NotNull ItemStack it) {
         final ItemMeta meta = it.getItemMeta();
 
-        if (meta == null) return MESSAGES.getString("shulker-title");
-        if (meta.getDisplayName().isEmpty()) return MESSAGES.getString("shulker-title");
+        if (meta == null || meta.getDisplayName().isEmpty()) return ColorUtils.format(MESSAGES.getString("shulker-title"));
 
         return meta.getDisplayName();
     }

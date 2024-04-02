@@ -3,6 +3,7 @@ package com.artillexstudios.axshulkers.commands;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
+import com.artillexstudios.axshulkers.utils.ColorUtils;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.PermissionUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
@@ -56,7 +57,7 @@ public class Commands implements CommandExecutor {
             }
 
             final ItemMeta meta = it.getItemMeta();
-            final String name = meta == null ? MESSAGES.getString("shulker-title") : meta.getDisplayName();
+            final String name = meta == null ? ColorUtils.format(MESSAGES.getString("shulker-title")) : meta.getDisplayName();
 
             ShulkerUtils.setShulkerContents(it, Shulkerboxes.getShulker(it, name).getShulkerInventory(), true);
 
