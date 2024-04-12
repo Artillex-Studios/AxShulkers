@@ -27,6 +27,8 @@ disable-shulker-opening: false
 disable-shulker-placing: false
 # if this is true then dispensers won't place shulker boxes
 disable-shulker-dispensing: false
+# if this is true, the shulker will be closed if the player moves
+disable-moving-while-open: false
 
 # if this is true then shulkers will be immune to cactus, lava, fire, etc..
 undestoryable-shulkers: false
@@ -72,4 +74,4 @@ database:
   type: "h2"
 
 # do not change this
-version: 9
+version: 10

@@ -8,6 +8,7 @@ import com.artillexstudios.axshulkers.listeners.impl.CreativeClickListener;
 import com.artillexstudios.axshulkers.listeners.impl.EntityDeathListener;
 import com.artillexstudios.axshulkers.listeners.impl.InventoryClickListener;
 import com.artillexstudios.axshulkers.listeners.impl.PlayerDropItemListener;
+import com.artillexstudios.axshulkers.listeners.impl.PlayerMoveListener;
 import com.artillexstudios.axshulkers.listeners.impl.ShulkerOpenListener;
 import org.bukkit.plugin.PluginManager;
 
@@ -24,5 +25,6 @@ public class RegisterListeners {
         plm.registerEvents(new PlayerDropItemListener(), main);
         plm.registerEvents(new BlockDispenseListener(), main);
         plm.registerEvents(new EntityDeathListener(), main);
+        plm.registerEvents(new PlayerMoveListener(), main);
     }
 }

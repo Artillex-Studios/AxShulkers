@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -105,7 +106,7 @@ public class ShulkerOpenListener implements Listener {
             shulkerbox.updateReference();
             shulkerbox.openShulkerFor(player);
 
-            MessageUtils.sendMsgP(player, "open.message");
+            MessageUtils.sendMsgP(player, "open.message", Collections.singletonMap("%name%", shulkerbox.getTitle()));
 
             if (!MESSAGES.getString("open.sound").isEmpty()) {
                 player.playSound(player.getLocation(), Sound.valueOf(MESSAGES.getString("open.sound")), 1f, 1f);

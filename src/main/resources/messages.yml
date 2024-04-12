@@ -31,6 +31,7 @@ errors:
   banned-item: "&#FF3333You can't put this item into shulker boxes!"
   blacklisted-world: "&#FF3333You can't open shulkers in this world!"
   cant-run-commands: "&#FF3333You can't run commands while a shulker is open!"
+  moving-disabled: "&#FF3333You can't move while a shulker is open!"
 
 # do not change this
-version: 3
+version: 4

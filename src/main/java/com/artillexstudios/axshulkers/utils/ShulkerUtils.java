@@ -122,6 +122,7 @@ public class ShulkerUtils {
             if (!shulkerbox.getShulkerInventory().equals(player.getOpenInventory().getTopInventory())) continue;
 
             shulker = shulkerbox;
+            break;
         }
 
         return shulker;

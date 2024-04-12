@@ -62,6 +62,10 @@ public class Shulkerbox {
         this.reference = new WeakReference<>(it);
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public void setItem(@NotNull ItemStack item) {
         final String name = ShulkerUtils.getShulkerName(item);
 
