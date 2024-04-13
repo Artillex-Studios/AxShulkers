@@ -1,7 +1,6 @@
 package com.artillexstudios.axshulkers.utils;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -11,43 +10,26 @@ import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 
 public class MessageUtils {
 
-    public static void sendMsgP(CommandSender p, String path) {
+    public static void sendMsgP(CommandSender player, String path) {
         if (MESSAGES.getString(path).isEmpty()) return;
-        p.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + MESSAGES.getString(path)));
+        player.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + MESSAGES.getString(path)));
     }
 
-    public static void sendMsgP(Player p, String path) {
+    public static void sendMsgP(CommandSender player, String path, Map<String, String> replacements) {
         if (MESSAGES.getString(path).isEmpty()) return;
-        p.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + MESSAGES.getString(path)));
-    }
-
-    public static void sendMsgP(Player p, String path, Map<String, String> replacements) {
-        if (MESSAGES.getString(path).isEmpty()) return;
-
         AtomicReference<String> message = new AtomicReference<>(MESSAGES.getString(path));
         replacements.forEach((key, value) -> message.set(message.get().replace(key, value)));
-        p.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + message));
+        player.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + message));
     }
 
-    public static void sendMsgP(CommandSender p, String path, Map<String, String> replacements) {
-        AtomicReference<String> message = new AtomicReference<>(MESSAGES.getString(path));
-        replacements.forEach((key, value) -> message.set(message.get().replace(key, value)));
-        p.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + message));
+    public static void sendMsg(CommandSender player, String path) {
+        if (MESSAGES.getString(path).isEmpty()) return;
+        player.sendMessage(ColorUtils.format(MESSAGES.getString(path)));
     }
 
-    public static void sendMsg(Player p, String path) {
-        p.sendMessage(ColorUtils.format(MESSAGES.getString(path)));
-    }
-
-    public static void sendListMsg(Player p, String path) {
+    public static void sendListMsg(CommandSender player, String path) {
         for (String m : MESSAGES.getStringList(path)) {
-            p.sendMessage(ColorUtils.format(m));
-        }
-    }
-
-    public static void sendListMsg(CommandSender p, String path) {
-        for (String m : MESSAGES.getStringList(path)) {
-            p.sendMessage(ColorUtils.format(m));
+            player.sendMessage(ColorUtils.format(m));
         }
     }
 }
