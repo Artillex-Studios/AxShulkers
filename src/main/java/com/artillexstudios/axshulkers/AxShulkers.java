@@ -92,12 +92,6 @@ public final class AxShulkers extends JavaPlugin {
             case "h2":
                 database = new H2();
                 break;
-//            case "mysql":
-//                database = new MySQL();
-//                break;
-//            case "postgresql":
-//                database = new PostgreSQL();
-//                break;
             default:
                 database = new SQLite();
                 break;
@@ -108,7 +102,7 @@ public final class AxShulkers extends JavaPlugin {
         new ColorUtils();
         new RegisterListeners().register();
 
-        new AutoSaveScheduler().start();
+        AutoSaveScheduler.start();
 
         this.getCommand("axshulkers").setExecutor(new Commands());
         this.getCommand("axshulkers").setTabCompleter(new TabComplete());
@@ -118,6 +112,7 @@ public final class AxShulkers extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        AutoSaveScheduler.stop();
         for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
             AxShulkers.getDB().updateShulker(shulkerbox.getShulkerInventory().getContents(), shulkerbox.getUUID());
 

@@ -26,7 +26,7 @@ shulker-title: "&0Shulker Box"
 
 errors:
   no-permission: "&#FF3333You don't have permission to run this command!"
-  no-shulker: "&#FF3333You are not holding a shulker box!"
+  no-shulker: "&#FF3333You are not holding a shulker box or it is already cleared!"
   creative-copy-item: "&#FF3333It looks like you have copied a shulker box, but no worries, we fixed it for you!"
   banned-item: "&#FF3333You can't put this item into shulker boxes!"
   blacklisted-world: "&#FF3333You can't open shulkers in this world!"

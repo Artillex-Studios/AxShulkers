@@ -20,11 +20,6 @@ public class Config implements AbstractConfig {
         try {
             file = YamlDocument.create(new File(AxShulkers.getInstance().getDataFolder(), "config.yml"), AxShulkers.getInstance().getResource("config.yml"), GeneralSettings.builder().setUseDefaults(false).build(), LoaderSettings.DEFAULT, DumperSettings.DEFAULT, UpdaterSettings.builder().setKeepAll(true).setVersioning(new BasicVersioning("version")).build());
             file.update();
-
-            // fix typo
-            file.set("enable-obfuscation", file.getBoolean("enable-obsfucation", false));
-            file.remove("enable-obsfucation");
-            file.save();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

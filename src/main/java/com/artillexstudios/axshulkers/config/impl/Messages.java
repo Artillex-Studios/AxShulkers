@@ -17,7 +17,6 @@ public class Messages implements AbstractConfig {
 
     @Override
     public void setup() {
-
         try {
             file = YamlDocument.create(new File(AxShulkers.getInstance().getDataFolder(), "messages.yml"), AxShulkers.getInstance().getResource("messages.yml"), GeneralSettings.builder().setUseDefaults(false).build(), LoaderSettings.DEFAULT, DumperSettings.DEFAULT, UpdaterSettings.builder().setKeepAll(true).setVersioning(new BasicVersioning("version")).build());
             file.update();
