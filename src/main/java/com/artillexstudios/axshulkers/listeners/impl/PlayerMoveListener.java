@@ -15,6 +15,8 @@ public class PlayerMoveListener implements Listener {
     public void onMove(@NotNull PlayerMoveEvent event) {
         if (!CONFIG.getBoolean("disable-moving-while-open", false)) return;
         if (!event.getPlayer().getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) return;
+        if (event.getTo() == null) return;
+        if (event.getFrom().distanceSquared(event.getTo()) == 0) return;
 
         MessageUtils.sendMsgP(event.getPlayer(), "errors.moving-disabled");
         event.getPlayer().closeInventory();

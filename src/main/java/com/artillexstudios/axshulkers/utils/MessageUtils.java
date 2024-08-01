@@ -11,19 +11,19 @@ import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 public class MessageUtils {
 
     public static void sendMsgP(CommandSender player, String path) {
-        if (MESSAGES.getString(path).isEmpty()) return;
+        if (MESSAGES.getString(path, "").isEmpty()) return;
         player.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + MESSAGES.getString(path)));
     }
 
     public static void sendMsgP(CommandSender player, String path, Map<String, String> replacements) {
-        if (MESSAGES.getString(path).isEmpty()) return;
+        if (MESSAGES.getString(path, "").isEmpty()) return;
         AtomicReference<String> message = new AtomicReference<>(MESSAGES.getString(path));
         replacements.forEach((key, value) -> message.set(message.get().replace(key, value)));
         player.sendMessage(ColorUtils.format(CONFIG.getString("prefix") + message));
     }
 
     public static void sendMsg(CommandSender player, String path) {
-        if (MESSAGES.getString(path).isEmpty()) return;
+        if (MESSAGES.getString(path, "").isEmpty()) return;
         player.sendMessage(ColorUtils.format(MESSAGES.getString(path)));
     }
 

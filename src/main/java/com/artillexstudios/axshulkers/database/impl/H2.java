@@ -102,9 +102,7 @@ public class H2 implements Database {
 
     @Override
     public void disable() {
-        final String sql = "SHUTDOWN COMPACT;";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.executeUpdate();
+        try {
             conn.close();
         } catch (Exception ex) {
             ex.printStackTrace();

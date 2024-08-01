@@ -15,6 +15,7 @@ import com.artillexstudios.axshulkers.libraries.Libraries;
 import com.artillexstudios.axshulkers.listeners.RegisterListeners;
 import com.artillexstudios.axshulkers.schedulers.AutoSaveScheduler;
 import com.artillexstudios.axshulkers.utils.ColorUtils;
+import com.artillexstudios.axshulkers.utils.UpdateNotifier;
 import com.tcoded.folialib.FoliaLib;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.byteflux.libby.BukkitLibraryManager;
@@ -108,6 +109,8 @@ public final class AxShulkers extends JavaPlugin {
         this.getCommand("axshulkers").setTabCompleter(new TabComplete());
 
         Bukkit.getConsoleSender().sendMessage(ColorUtils.format("&#CC00FF[AxShulkers] Loaded plugin! Using &f" + database.getType() + " &#CC00FFdatabase to store data!"));
+
+        if (CONFIG.getBoolean("update-notifier.enabled", true)) new UpdateNotifier(this, 4666);
     }
 
     @Override

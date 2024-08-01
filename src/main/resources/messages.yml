@@ -33,5 +33,7 @@ errors:
   cant-run-commands: "&#FF3333You can't run commands while a shulker is open!"
   moving-disabled: "&#FF3333You can't move while a shulker is open!"
 
+update-notifier: "&#DD88FFThere is a new version of AxShulkers available! &#DDDDDD(&#FFFFFFcurrent: &#FF0000%current% &#DDDDDD| &#FFFFFFlatest: &#00FF00%latest%&#DDDDDD)"
+
 # do not change this
-version: 4
+version: 5
