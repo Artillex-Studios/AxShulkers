@@ -50,7 +50,6 @@ public class BlockDispenseListener implements Listener {
     }
 
     public void handleDispenser(@NotNull BlockDispenseEvent event) {
-
         if (ShulkerUtils.getShulkerUUID(event.getItem()) == null) return;
 
         final Directional directional = (Directional) event.getBlock().getBlockData();

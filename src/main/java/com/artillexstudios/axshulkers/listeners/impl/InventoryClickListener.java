@@ -48,6 +48,10 @@ public class InventoryClickListener implements Listener {
                     MessageUtils.sendMsgP(player, "errors.banned-item");
                     return;
                 }
+
+                if (ShulkerUtils.isShulker(it)) {
+                    event.setCancelled(true);
+                }
             }
         }
 
@@ -65,7 +69,6 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler
     public void onDrag(@NotNull InventoryDragEvent event) {
-
         final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getWhoClicked());
         if (shulker == null) return;
 
@@ -77,7 +80,6 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onClose(@NotNull InventoryCloseEvent event) {
-
         final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getPlayer());
         if (shulker == null) return;
 

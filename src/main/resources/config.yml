@@ -1,4 +1,16 @@
+# DOCUMENTATION: https://docs.artillex-studios.com/axshulkers.html
+#
+# IMPORTANT: before you put a shulker in a kit or a crate, make sure to hold it in your hand and run /axshulkers clear!
+# if this is not done, people will be getting the exact same shulker, and they will share its inventory (probably not what you want)
+# you don't need to worry about this, if you enable the 'auto-clear-shulkers' setting!
+
 prefix: "&#CC00FF&lAxShulkers &7» "
+
+# EXPERIEMENTAL (this option was well tested, however it is still less safe than the default system)
+# this setting will remove the safety UUID from the shulkers after they are closed
+# it relies on java WeakReference-s to protect you from dupes
+# this also force disables 'enable-obfuscation'
+auto-clear-shulkers: false
 
 # this setting is not reloadable, you have to restart the server
 # how often should the plugin save shulker boxes from ram to the database?
@@ -32,13 +44,6 @@ disable-moving-while-open: false
 
 # if this is true then shulkers will be immune to cactus, lava, fire, etc..
 undestoryable-shulkers: false
-
-# EXPERIEMENTAL, may cause dupes/item loss
-# automatically clears the UUID from shulkers, so you never have to worry about shared inventories
-# clearing does not mean clearing the inventory of the shulker, but it means that we only store opened shulkers in memory
-# and when you close them, we delete the shulker from the database/ram
-# this also force disables 'enable-obfuscation'
-auto-clear-shulkers: false
 
 # when in creative mode, the plugin will not modify any of the shulkers
 # note that this probably allows some dupes in creative mode, of course in creative you can already duplicate items so it shouldn't be a big deal

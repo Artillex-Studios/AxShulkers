@@ -23,7 +23,6 @@ public class Commands implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
-
         if (args.length == 1 && args[0].equals("reload")) {
             if (!PermissionUtils.hasPermission(sender, "reload")) {
                 MessageUtils.sendMsgP(sender, "errors.no-permission");

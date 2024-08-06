@@ -85,7 +85,7 @@ public class ShulkerOpenListener implements Listener {
         }
 
         if (cds.containsKey(player.getUniqueId()) && System.currentTimeMillis() - cds.get(player.getUniqueId()) < CONFIG.getLong("open-cooldown-miliseconds")) {
-            Map<String, String> map = new HashMap<>();
+            final Map<String, String> map = new HashMap<>();
             map.put("%seconds%", Long.toString((CONFIG.getLong("open-cooldown-miliseconds") - System.currentTimeMillis() + cds.get(player.getUniqueId())) / 1000L + 1));
             MessageUtils.sendMsgP(player, "cooldown", map);
             return false;
@@ -96,9 +96,11 @@ public class ShulkerOpenListener implements Listener {
         final String name = ShulkerUtils.getShulkerName(it);
 
         AxShulkers.getFoliaLib().getImpl().runAtLocation(player.getLocation(), t -> {
-            if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) return;
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
+            if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) {
+                shulkerbox.close();
+            }
 
             ShulkerUtils.clearShulkerContents(it);
 

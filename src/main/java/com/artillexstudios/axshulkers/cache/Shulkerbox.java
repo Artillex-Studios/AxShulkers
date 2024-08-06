@@ -99,9 +99,7 @@ public class Shulkerbox {
     }
 
     public void close() {
-        final List<HumanEntity> viewers = new ArrayList<>(shulkerInventory.getViewers());
-        final Iterator<HumanEntity> viewerIterator = viewers.iterator();
-
+        final Iterator<HumanEntity> viewerIterator = shulkerInventory.getViewers().iterator();
         while (viewerIterator.hasNext()) {
             viewerIterator.next().closeInventory();
             viewerIterator.remove();

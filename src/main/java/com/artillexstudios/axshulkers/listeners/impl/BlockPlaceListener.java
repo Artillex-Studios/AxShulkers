@@ -38,7 +38,6 @@ public class BlockPlaceListener implements Listener {
         if (shulkerbox == null) return;
 
         shulkerbox.close();
-
         ShulkerUtils.clearShulkerContents(event.getBlockPlaced());
 
         AxShulkers.getDatabaseQueue().submit(() -> {

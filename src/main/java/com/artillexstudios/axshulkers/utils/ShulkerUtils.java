@@ -14,16 +14,37 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.UUID;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 
 public class ShulkerUtils {
+    private static final Set<Material> shulkers = EnumSet.of( // we don't have Tag.SHULKER_BOXES on 1.13
+            Material.SHULKER_BOX,
+            Material.WHITE_SHULKER_BOX,
+            Material.LIGHT_GRAY_SHULKER_BOX,
+            Material.GRAY_SHULKER_BOX,
+            Material.BLACK_SHULKER_BOX,
+            Material.BROWN_SHULKER_BOX,
+            Material.RED_SHULKER_BOX,
+            Material.ORANGE_SHULKER_BOX,
+            Material.YELLOW_SHULKER_BOX,
+            Material.LIME_SHULKER_BOX,
+            Material.GREEN_SHULKER_BOX,
+            Material.CYAN_SHULKER_BOX,
+            Material.LIGHT_BLUE_SHULKER_BOX,
+            Material.BLUE_SHULKER_BOX,
+            Material.PURPLE_SHULKER_BOX,
+            Material.MAGENTA_SHULKER_BOX,
+            Material.PINK_SHULKER_BOX
+    );
 
     public static boolean isShulker(@Nullable ItemStack it) {
         if (it == null) return false;
-        return it.getType().toString().contains("SHULKER_BOX");
+        return shulkers.contains(it.getType());
     }
 
     @NotNull

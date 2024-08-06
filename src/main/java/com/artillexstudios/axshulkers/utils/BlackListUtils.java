@@ -9,7 +9,6 @@ public class BlackListUtils {
 
     public static boolean isBlackListed(@Nullable ItemStack it) {
         if (it == null) return false;
-        if (ShulkerUtils.isShulker(it)) return true;
         for (String s : CONFIG.getSection("blacklisted-items").getRoutesAsStrings(false)) {
             if (CONFIG.getString("blacklisted-items." + s + ".material") != null) {
                 if (!it.getType().toString().equalsIgnoreCase(CONFIG.getString("blacklisted-items." + s + ".material"))) continue;
