@@ -31,6 +31,7 @@ public class Shulkerboxes {
 
     @Nullable
     public static Shulkerbox getShulker(@NotNull ItemStack it, @NotNull String name) {
+        if (!ShulkerUtils.isShulker(it)) return null;
         final UUID uuid = ShulkerUtils.getShulkerUUID(it);
 
         if (uuid == null) {

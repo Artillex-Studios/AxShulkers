@@ -3,7 +3,7 @@
 
 reloaded: "&#33FF33Successfully reloaded plugin!"
 cleared: "&#33FF33The shulker in your hand have been removed from the database!"
-cooldown: "&#FF3333You can't open shulkers for &f%seconds% &#FF3333seconds!"
+cooldown: "&#FF3333You can't open shulkers for another &f%seconds% &#FF3333seconds!"
 
 # list of sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 open:
