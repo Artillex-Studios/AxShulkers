@@ -58,7 +58,7 @@ public class ShulkerOpenListener implements Listener {
                 if (!shulkerbox.getUUID().equals(ShulkerUtils.getShulkerUUID(event.getCurrentItem()))) continue;
 
                 event.setCancelled(true);
-                AxShulkers.getFoliaLib().getImpl().runNextTick(t -> {
+                AxShulkers.getFoliaLib().getScheduler().runNextTick(t -> {
                     event.getWhoClicked().closeInventory();
                 });
                 return;
@@ -95,7 +95,7 @@ public class ShulkerOpenListener implements Listener {
 
         final String name = ShulkerUtils.getShulkerName(it);
 
-        AxShulkers.getFoliaLib().getImpl().runAtLocation(player.getLocation(), t -> {
+        AxShulkers.getFoliaLib().getScheduler().runAtLocation(player.getLocation(), t -> {
             final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
             if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) {

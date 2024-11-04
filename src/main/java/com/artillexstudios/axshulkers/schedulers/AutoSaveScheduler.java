@@ -5,18 +5,19 @@ import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class AutoSaveScheduler {
-    private static ScheduledFuture<?> future = null;
+    private static ScheduledExecutorService executor = null;
 
     public static void start() {
-        if (future != null) future.cancel(true);
+        if (executor != null) executor.shutdown();
 
         final int backupMinutes = AxShulkers.CONFIG.getInt("auto-save-minutes", 5);
 
-        future = Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+        executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
             for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
                 AxShulkers.getDB().updateShulker(shulkerbox.getShulkerInventory().getContents(), shulkerbox.getUUID());
             }
@@ -24,6 +25,7 @@ public class AutoSaveScheduler {
     }
 
     public static void stop() {
-        future.cancel(true);
+        if (executor == null) return;
+        executor.shutdown();
     }
 }
