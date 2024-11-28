@@ -42,6 +42,9 @@ disable-shulker-dispensing: false
 # if this is true, the shulker will be closed if the player moves
 disable-moving-while-open: false
 
+# If this is true then player can open shulkers from all type of inventory (chest, trapped chest, dispenser, etc.)
+enable-shulker-opening-in-all-inventory-type: false
+
 # if this is true then shulkers will be immune to cactus, lava, fire, etc..
 undestoryable-shulkers: false
 
