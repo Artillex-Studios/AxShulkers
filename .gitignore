@@ -1,3 +1,8 @@
+# Ecplise IDE
+.classpath
+.settings/
+.project
+
 # User-specific stuff
 .idea/
 
