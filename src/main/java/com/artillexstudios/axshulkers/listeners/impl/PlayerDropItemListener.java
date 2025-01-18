@@ -14,7 +14,7 @@ public class PlayerDropItemListener implements Listener {
     @EventHandler (ignoreCancelled = true)
     public void onDrop(@NotNull PlayerDropItemEvent event) {
         ItemStack it = event.getItemDrop().getItemStack();
-        if (!ShulkerUtils.isShulker(it)) return;
+        if (!ShulkerUtils.isShulker(it) || ShulkerUtils.getShulkerUUID(it) == null) return;
 
         final String name = ShulkerUtils.getShulkerName(it);
         final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
