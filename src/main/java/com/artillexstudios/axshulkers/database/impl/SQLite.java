@@ -33,7 +33,6 @@ public class SQLite implements Database {
         }
 
         final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `axshulkers_data` ( `uuid` VARCHAR(36) NOT NULL, `inventory` VARCHAR NOT NULL, PRIMARY KEY (`uuid`) );";
-
         try (PreparedStatement stmt = conn.prepareStatement(CREATE_TABLE)) {
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -44,7 +43,6 @@ public class SQLite implements Database {
     @Override
     public void saveShulker(@NotNull ItemStack[] items, @NotNull UUID uuid) {
         final String txt = "INSERT INTO `axshulkers_data`(`uuid`, `inventory`) VALUES (?,?);";
-
         try (PreparedStatement stmt = conn.prepareStatement(txt)) {
             stmt.setString(1, uuid.toString());
             stmt.setString(2, SerializationUtils.invToBase64(items));
@@ -57,7 +55,6 @@ public class SQLite implements Database {
     @Override
     public void updateShulker(@NotNull ItemStack[] items, @NotNull UUID uuid) {
         final String txt = "UPDATE `axshulkers_data` SET `inventory`= ? WHERE `uuid` = ?";
-
         try (PreparedStatement stmt = conn.prepareStatement(txt)) {
             stmt.setString(2, uuid.toString());
             stmt.setString(1, SerializationUtils.invToBase64(items));
@@ -71,29 +68,24 @@ public class SQLite implements Database {
     @Nullable
     public ItemStack[] getShulker(@NotNull UUID uuid) {
         final String txt = "SELECT `inventory` FROM `axshulkers_data` WHERE `uuid` = ?;";
-
         try (PreparedStatement stmt = conn.prepareStatement(txt)) {
             stmt.setString(1, uuid.toString());
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) return SerializationUtils.invFromBase64(rs.getString(1));
             }
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
         return null;
     }
 
     @Override
     public void removeShulker(@NotNull UUID uuid) {
         final String txt = "DELETE FROM `axshulkers_data` WHERE `uuid` = ?;";
-
         try (PreparedStatement stmt = conn.prepareStatement(txt)) {
             stmt.setString(1, uuid.toString());
             stmt.executeUpdate();
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

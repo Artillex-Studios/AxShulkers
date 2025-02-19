@@ -30,11 +30,9 @@ public class BlockPlaceListener implements Listener {
             return;
         }
 
-        final ItemStack it = event.getItemInHand().clone();
-
-        final String name = ShulkerUtils.getShulkerName(it);
-
-        final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
+        ItemStack it = event.getItemInHand().clone();
+        String name = ShulkerUtils.getShulkerName(it);
+        Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
         if (shulkerbox == null) return;
 
         shulkerbox.close();
