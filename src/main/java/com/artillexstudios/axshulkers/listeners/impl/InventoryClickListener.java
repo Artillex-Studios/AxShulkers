@@ -3,7 +3,7 @@ package com.artillexstudios.axshulkers.listeners.impl;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
-import com.artillexstudios.axshulkers.utils.BlackListUtils;
+import com.artillexstudios.axshulkers.utils.BlacklistUtils;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import org.bukkit.GameMode;
@@ -18,8 +18,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 
@@ -31,40 +33,36 @@ public class InventoryClickListener implements Listener {
     @EventHandler (priority = EventPriority.LOWEST)
     public void onClick(@NotNull InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
+        if (player.getOpenInventory().getTopInventory().getType() != InventoryType.SHULKER_BOX) return;
 
-        ItemStack it = event.getClick() == ClickType.NUMBER_KEY ? player.getInventory().getItem(event.getHotbarButton()) : event.getCurrentItem();
-
-        if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) {
-            if (event.getClick().equals(ClickType.NUMBER_KEY)
-                    || event.getAction().equals(InventoryAction.HOTBAR_SWAP)
-                    || !player.getOpenInventory().getTopInventory().equals(event.getClickedInventory())
-            ) {
-                if (event.getAction().equals(InventoryAction.HOTBAR_SWAP)) {
-                    it = event.getWhoClicked().getInventory().getItemInOffHand();
-                }
-
-                if (BlackListUtils.isBlackListed(it)) {
-                    event.setCancelled(true);
-                    MessageUtils.sendMsgP(player, "errors.banned-item");
-                    return;
-                }
-
-                if (ShulkerUtils.isShulker(it)) {
-                    event.setCancelled(true);
-                }
-            }
-        }
-
-        final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen(player);
-        if (shulker == null) return;
+        ItemStack it = getItem(event);
 
         if (!player.hasPermission("axshulkers.modify")) {
             event.setCancelled(true);
             return;
         }
 
+        if (BlacklistUtils.isBlacklisted(it)) {
+            event.setCancelled(true);
+            MessageUtils.sendMsgP(player, "errors.banned-item");
+            return;
+        }
+
         if (ShulkerUtils.isShulker(it)) event.setCancelled(true);
         if (ShulkerUtils.isShulker(event.getCurrentItem())) event.setCancelled(true);
+    }
+
+    @Nullable
+    private ItemStack getItem(InventoryClickEvent event) {
+        if (event.getClick() == ClickType.NUMBER_KEY && event.getClickedInventory() != null) {
+            Inventory inventory;
+            if (event.getClickedInventory().getType() == InventoryType.PLAYER && event.getAction() != InventoryAction.HOTBAR_SWAP)
+                inventory = event.getView().getTopInventory();
+            else
+                inventory = event.getView().getBottomInventory();
+            return inventory.getItem(event.getHotbarButton());
+        }
+        return event.getCurrentItem();
     }
 
     @EventHandler

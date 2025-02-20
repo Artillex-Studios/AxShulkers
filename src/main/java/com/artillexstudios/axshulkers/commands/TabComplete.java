@@ -9,18 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabComplete implements TabCompleter {
-    final List<String> results = new ArrayList<>();
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, String[] args) {
-        results.clear();
+        List<String> results = new ArrayList<>();
 
         if (args.length == 0 || (args.length == 1 && ("reload".contains(args[0]) || "clear".contains(args[0])))) {
-            if ("reload".contains(args[0]) && !args[0].equalsIgnoreCase("reload")) {
+            if ("reload".startsWith(args[0]) && !args[0].equalsIgnoreCase("reload")) {
                 results.add("reload");
             }
 
-            if ("clear".contains(args[0]) && !args[0].equalsIgnoreCase("clear")) {
+            if ("clear".startsWith(args[0]) && !args[0].equalsIgnoreCase("clear")) {
                 results.add("clear");
             }
         }

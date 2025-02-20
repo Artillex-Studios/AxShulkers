@@ -1,15 +1,18 @@
 package com.artillexstudios.axshulkers.utils;
 
+import dev.dejvokep.boostedyaml.block.implementation.Section;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 
-public class BlackListUtils {
+public class BlacklistUtils {
 
-    public static boolean isBlackListed(@Nullable ItemStack it) {
+    public static boolean isBlacklisted(@Nullable ItemStack it) {
         if (it == null) return false;
-        for (String s : CONFIG.getSection("blacklisted-items").getRoutesAsStrings(false)) {
+        Section section = CONFIG.getSection("blacklisted-items");
+        if (section == null) return false;
+        for (String s : section.getRoutesAsStrings(false)) {
             if (CONFIG.getString("blacklisted-items." + s + ".material") != null) {
                 if (!it.getType().toString().equalsIgnoreCase(CONFIG.getString("blacklisted-items." + s + ".material"))) continue;
                 return true;
