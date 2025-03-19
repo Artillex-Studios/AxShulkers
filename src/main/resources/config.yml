@@ -41,9 +41,12 @@ disable-shulker-placing: false
 disable-shulker-dispensing: false
 # if this is true, the shulker will be closed if the player moves
 disable-moving-while-open: false
+# if this is true, players won't be able to run commands while they have a shulker open
+# might cause issues with some plugins (players might be able to scam with auction plugins)
+disable-commands-while-open: true
 
 # if this is true then shulkers will be immune to cactus, lava, fire, etc..
-undestoryable-shulkers: false
+undestroyable-shulkers: false
 
 # when in creative mode, the plugin will not modify any of the shulkers
 # note that this probably allows some dupes in creative mode, of course in creative you can already duplicate items so it shouldn't be a big deal
@@ -86,4 +89,4 @@ update-notifier:
   on-join: true
 
 # do not change this
-version: 11
+version: 12

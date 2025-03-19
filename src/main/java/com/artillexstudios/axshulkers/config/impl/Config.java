@@ -20,6 +20,13 @@ public class Config implements AbstractConfig {
         try {
             file = YamlDocument.create(new File(AxShulkers.getInstance().getDataFolder(), "config.yml"), AxShulkers.getInstance().getResource("config.yml"), GeneralSettings.builder().setUseDefaults(false).build(), LoaderSettings.DEFAULT, DumperSettings.DEFAULT, UpdaterSettings.builder().setKeepAll(true).setVersioning(new BasicVersioning("version")).build());
             file.update();
+            // fix typo
+            Boolean old = file.getBoolean("undestoryable-shulkers", null);
+            if (old != null) {
+                file.set("undestroyable-shulkers", old);
+                file.remove("undestoryable-shulkers");
+            }
+            file.save();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
