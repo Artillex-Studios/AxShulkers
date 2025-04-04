@@ -12,15 +12,17 @@ import com.artillexstudios.axshulkers.database.DatabaseQueue;
 import com.artillexstudios.axshulkers.database.impl.H2;
 import com.artillexstudios.axshulkers.database.impl.SQLite;
 import com.artillexstudios.axshulkers.libraries.Libraries;
-import com.artillexstudios.axshulkers.listeners.RegisterListeners;
+import com.artillexstudios.axshulkers.listeners.Listeners;
 import com.artillexstudios.axshulkers.schedulers.AutoSaveScheduler;
 import com.artillexstudios.axshulkers.utils.ColorUtils;
 import com.artillexstudios.axshulkers.utils.UpdateNotifier;
 import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.PlatformScheduler;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.byteflux.libby.BukkitLibraryManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AxShulkers extends JavaPlugin {
@@ -31,7 +33,7 @@ public final class AxShulkers extends JavaPlugin {
     private static AxShulkers instance;
     private static DatabaseQueue databaseQueue;
     private static Database database;
-    private static FoliaLib foliaLib;
+    public static FoliaLib foliaLib;
 
     public static AbstractConfig getAbstractConfig() {
         return abstractConfig;
@@ -53,8 +55,8 @@ public final class AxShulkers extends JavaPlugin {
         return databaseQueue;
     }
 
-    public static FoliaLib getFoliaLib() {
-        return foliaLib;
+    public static PlatformScheduler getScheduler() {
+        return foliaLib.getScheduler();
     }
 
     @Override
@@ -75,9 +77,7 @@ public final class AxShulkers extends JavaPlugin {
         instance = this;
 
         foliaLib = new FoliaLib(this);
-
-        int pluginId = 19570;
-        new Metrics(this, pluginId);
+        new Metrics(this, 19570);
 
         abstractConfig = new Config();
         abstractConfig.setup();
@@ -87,7 +87,6 @@ public final class AxShulkers extends JavaPlugin {
         abstractMessages.setup();
         MESSAGES = abstractMessages.getConfig();
 
-        databaseQueue = new DatabaseQueue("AxShulkers-Datastore-thread");
 
         switch (CONFIG.getString("database.type").toLowerCase()) {
             case "h2":
@@ -99,14 +98,13 @@ public final class AxShulkers extends JavaPlugin {
         }
 
         database.setup();
-
-        new ColorUtils();
-        new RegisterListeners().register();
-
+        databaseQueue = new DatabaseQueue("AxShulkers-Datastore-thread");
+        Listeners.register();
         AutoSaveScheduler.start();
 
-        this.getCommand("axshulkers").setExecutor(new Commands());
-        this.getCommand("axshulkers").setTabCompleter(new TabComplete());
+        PluginCommand command = this.getCommand("axshulkers");
+        command.setExecutor(new Commands());
+        command.setTabCompleter(new TabComplete());
 
         Bukkit.getConsoleSender().sendMessage(ColorUtils.format("&#CC00FF[AxShulkers] Loaded plugin! Using &f" + database.getType() + " &#CC00FFdatabase to store data!"));
 
@@ -116,9 +114,9 @@ public final class AxShulkers extends JavaPlugin {
     @Override
     public void onDisable() {
         AutoSaveScheduler.stop();
+
         for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
             AxShulkers.getDB().updateShulker(shulkerbox.getShulkerInventory().getContents(), shulkerbox.getUUID());
-
             shulkerbox.close();
         }
 

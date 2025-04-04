@@ -21,7 +21,7 @@ public class EntityDeathListener implements Listener {
         ItemStack it = ((Item) event.getEntity()).getItemStack();
         if (!ShulkerUtils.isShulker(it)) return;
 
-        if (CONFIG.getBoolean("undestoryable-shulkers")) {
+        if (CONFIG.getBoolean("undestroyable-shulkers")) {
             event.setCancelled(true);
             return;
         }
