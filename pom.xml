@@ -6,7 +6,7 @@
 
   <groupId>com.artillexstudios</groupId>
   <artifactId>AxShulkers</artifactId>
-  <version>1.18.1</version>
+  <version>1.19.0</version>
   <packaging>jar</packaging>
 
   <name>AxShulkers</name>
@@ -166,7 +166,7 @@
       <dependency>
           <groupId>de.tr7zw</groupId>
           <artifactId>item-nbt-api</artifactId>
-          <version>2.14.1</version>
+          <version>2.15.0</version>
           <scope>compile</scope>
       </dependency>
       <dependency>
