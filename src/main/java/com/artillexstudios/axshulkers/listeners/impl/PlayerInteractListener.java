@@ -12,14 +12,6 @@ import org.jetbrains.annotations.NotNull;
 public class PlayerInteractListener implements Listener {
 
     @EventHandler (ignoreCancelled = true)
-    public void onInteract(@NotNull PlayerInteractEvent event) {
-        if (event.getAction() == Action.PHYSICAL) return;
-        Shulkerbox shulkerbox;
-        if ((shulkerbox = ShulkerUtils.hasShulkerOpen(event.getPlayer())) == null) return;
-        shulkerbox.close();
-    }
-
-    @EventHandler (ignoreCancelled = true)
     public void onInteractEntity(@NotNull PlayerInteractEntityEvent event) {
         Shulkerbox shulkerbox;
         if ((shulkerbox = ShulkerUtils.hasShulkerOpen(event.getPlayer())) == null) return;

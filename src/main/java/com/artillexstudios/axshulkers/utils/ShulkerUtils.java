@@ -9,6 +9,7 @@ import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,17 @@ public class ShulkerUtils {
     public static boolean isShulker(@Nullable ItemStack it) {
         if (it == null) return false;
         return shulkers.contains(it.getType());
+    }
+
+    //returns shulker in main hand, if not found returns shulker in off hand
+    @Nullable
+    public static ItemStack getHeldShulker(PlayerInventory playerInventory) {
+        if (isShulker(playerInventory.getItemInMainHand()))
+            return playerInventory.getItemInMainHand();
+        else if (isShulker(playerInventory.getItemInOffHand()))
+            return playerInventory.getItemInOffHand();
+
+        return null;
     }
 
     @NotNull

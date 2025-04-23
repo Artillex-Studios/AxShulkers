@@ -36,10 +36,14 @@ public class ShulkerOpenListener implements Listener {
             event.getPlayer().closeInventory();
         }
 
-        if (event.getAction() != Action.RIGHT_CLICK_AIR) return;
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
         final Player player = event.getPlayer();
-        if (openShulker(player, player.getInventory().getItemInMainHand())) event.setCancelled(true);
+
+        ItemStack potentialShulker = ShulkerUtils.getHeldShulker(player.getInventory());
+        if (ShulkerUtils.isShulker(potentialShulker))
+            if (openShulker(player, potentialShulker))
+                event.setCancelled(true);
     }
 
     @EventHandler (priority = EventPriority.LOW)
