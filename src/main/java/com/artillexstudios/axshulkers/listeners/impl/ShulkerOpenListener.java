@@ -113,8 +113,16 @@ public class ShulkerOpenListener implements Listener {
 
             MessageUtils.sendMsgP(player, "open.message", Collections.singletonMap("%name%", shulkerbox.getTitle()));
 
-            if (!MESSAGES.getString("open.sound").isEmpty()) {
-                player.playSound(player.getLocation(), Sound.valueOf(MESSAGES.getString("open.sound")), 1f, 1f);
+            String openSound = MESSAGES.getString("open.sound", "");
+            if (!openSound.isEmpty()) {
+                try {
+                    Sound sound = Sound.valueOf(openSound.toUpperCase());
+                    player.playSound(player.getLocation(), sound, 1f, 1f);
+                } catch (Exception e) {
+                    try {
+                        player.playSound(player.getLocation(), openSound, 1f, 1f);
+                    } catch (Exception ignored) {}
+                }
             }
         });
         return true;
