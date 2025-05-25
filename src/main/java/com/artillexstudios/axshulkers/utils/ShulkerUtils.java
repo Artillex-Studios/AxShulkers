@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
@@ -141,14 +142,15 @@ public class ShulkerUtils {
     public static Shulkerbox hasShulkerOpen(@NotNull Player player) {
         Shulkerbox shulker = null;
 
-        UUID shulkeruuid = Shulkerboxes.getPlayerShulkerMap().get(player.getUniqueId());
-        if (shulkeruuid == null) return null;
-
-        Shulkerbox shulkerbox = Shulkerboxes.getShulkerMap().get(shulkeruuid);
-        if (shulkerbox != null && shulkerbox.getShulkerInventory().equals(player.getOpenInventory().getTopInventory())) {
+        ConcurrentLinkedDeque<UUID> queue = Shulkerboxes.getPlayerShulkerMap().get(player.getUniqueId());
+        if (queue == null) return null;
+        for (UUID uuid : queue) {
+            Shulkerbox shulkerbox = Shulkerboxes.getShulkerMap().get(uuid);
+            if (shulkerbox == null || !shulkerbox.getShulkerInventory().equals(player.getOpenInventory().getTopInventory()))
+                continue;
             shulker = shulkerbox;
+            break;
         }
-
         return shulker;
     }
 }

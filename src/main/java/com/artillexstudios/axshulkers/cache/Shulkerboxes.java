@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 
@@ -21,26 +22,36 @@ public class Shulkerboxes {
     public static ConcurrentHashMap<UUID, Shulkerbox> getShulkerMap() {
         return shulkerboxMap;
     }
-    private static final ConcurrentHashMap<UUID, UUID> playerShulkerboxMap = new ConcurrentHashMap<>();
+
+    private static final ConcurrentHashMap<UUID, ConcurrentLinkedDeque<UUID>> playerShulkerboxMap = new ConcurrentHashMap<>();
 
     public static void addShulkerbox(@NotNull Shulkerbox shulkerbox) {
         shulkerboxMap.put(shulkerbox.getUUID(), shulkerbox);
     }
 
-    public static ConcurrentHashMap<UUID, UUID> getPlayerShulkerMap() {
+    public static ConcurrentHashMap<UUID, ConcurrentLinkedDeque<UUID>> getPlayerShulkerMap() {
         return playerShulkerboxMap;
     }
 
     public static void removeShulkerbox(@NotNull UUID uuid) {
         shulkerboxMap.remove(uuid);
-        playerShulkerboxMap.entrySet().removeIf(entry -> entry.getValue().equals(uuid));
+        playerShulkerboxMap.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+    }
+
+    public static void removeShulkerbox(@NotNull UUID uuid, @NotNull Player player) {
+        shulkerboxMap.remove(uuid);
+        ConcurrentLinkedDeque<UUID> queue = playerShulkerboxMap.get(player.getUniqueId());
+        if (queue != null && queue.remove(uuid) && queue.isEmpty()) {
+            playerShulkerboxMap.remove(player.getUniqueId());
+        }
     }
 
     @Nullable
     public static Shulkerbox getShulker(@NotNull ItemStack it, @NotNull String name, Player player) {
         Shulkerbox shulkerbox = getShulker(it, name);
         if (shulkerbox != null && player != null) {
-            playerShulkerboxMap.put(player.getUniqueId(), shulkerbox.getUUID());
+            playerShulkerboxMap.computeIfAbsent(player.getUniqueId(), k -> new ConcurrentLinkedDeque<>());
+            playerShulkerboxMap.get(player.getUniqueId()).add(shulkerbox.getUUID());
         }
         return shulkerbox;
     }
