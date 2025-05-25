@@ -11,13 +11,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class PlayerDropItemListener implements Listener {
 
-    @EventHandler (ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true)
     public void onDrop(@NotNull PlayerDropItemEvent event) {
         ItemStack it = event.getItemDrop().getItemStack();
         if (!ShulkerUtils.isShulker(it) || ShulkerUtils.getShulkerUUID(it) == null) return;
 
         String name = ShulkerUtils.getShulkerName(it);
-        Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
+        Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name, event.getPlayer());
         if (shulkerbox == null) return;
         shulkerbox.close();
 

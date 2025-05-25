@@ -32,7 +32,7 @@ public class ShulkerOpenListener implements Listener {
     @EventHandler
     public void onInteract(@NotNull PlayerInteractEvent event) {
         if (event.getAction() == Action.PHYSICAL) return;
-        if (ShulkerUtils.hasShulkerOpen(event.getPlayer()) != null && event.getAction() != Action.LEFT_CLICK_AIR) {
+        if (event.getAction() != Action.LEFT_CLICK_AIR && ShulkerUtils.hasShulkerOpen(event.getPlayer()) != null) {
             event.getPlayer().closeInventory();
         }
 
@@ -42,7 +42,7 @@ public class ShulkerOpenListener implements Listener {
         if (openShulker(player, player.getInventory().getItemInMainHand())) event.setCancelled(true);
     }
 
-    @EventHandler (priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW)
     public void onShulkerClick(@NotNull InventoryClickEvent event) {
         if (!event.getClick().equals(ClickType.RIGHT)) return;
         if (!CONFIG.getBoolean("opening-from-inventory.enabled")) return;
@@ -97,9 +97,9 @@ public class ShulkerOpenListener implements Listener {
 
         final String name = ShulkerUtils.getShulkerName(it);
 
-        if (Shulkerboxes.getShulker(it, name) == null) return false;
+        if (Shulkerboxes.getShulker(it, name, player) == null) return false;
         AxShulkers.getScheduler().runAtLocation(player.getLocation(), t -> { // folia support
-            Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
+            Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name, player);
             if (shulkerbox == null) return;
             if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) {
                 shulkerbox.close();

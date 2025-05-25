@@ -3,6 +3,7 @@ package com.artillexstudios.axshulkers.cache;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,13 +21,28 @@ public class Shulkerboxes {
     public static ConcurrentHashMap<UUID, Shulkerbox> getShulkerMap() {
         return shulkerboxMap;
     }
+    private static final ConcurrentHashMap<UUID, UUID> playerShulkerboxMap = new ConcurrentHashMap<>();
 
     public static void addShulkerbox(@NotNull Shulkerbox shulkerbox) {
         shulkerboxMap.put(shulkerbox.getUUID(), shulkerbox);
     }
 
+    public static ConcurrentHashMap<UUID, UUID> getPlayerShulkerMap() {
+        return playerShulkerboxMap;
+    }
+
     public static void removeShulkerbox(@NotNull UUID uuid) {
         shulkerboxMap.remove(uuid);
+        playerShulkerboxMap.entrySet().removeIf(entry -> entry.getValue().equals(uuid));
+    }
+
+    @Nullable
+    public static Shulkerbox getShulker(@NotNull ItemStack it, @NotNull String name, Player player) {
+        Shulkerbox shulkerbox = getShulker(it, name);
+        if (shulkerbox != null && player != null) {
+            playerShulkerboxMap.put(player.getUniqueId(), shulkerbox.getUUID());
+        }
+        return shulkerbox;
     }
 
     @Nullable
