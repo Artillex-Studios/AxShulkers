@@ -33,12 +33,12 @@ public class UpdateNotifier implements Listener {
         instance.getServer().getPluginManager().registerEvents(this, instance);
 
         long time = 30L * 60L * 20L;
-        AxShulkers.getFoliaLib().getScheduler().runTimerAsync(t -> {
+        AxShulkers.getScheduler().runTimerAsync(t -> {
             this.latest = readVersion();
             this.newest = isLatest(current);
 
             if (latest == null || newest) return;
-            AxShulkers.getFoliaLib().getScheduler().runLaterAsync(t2 -> {
+            AxShulkers.getScheduler().runLaterAsync(t2 -> {
                 Bukkit.getConsoleSender().sendMessage(getMessage());
             }, 50L);
             t.cancel();
@@ -50,7 +50,7 @@ public class UpdateNotifier implements Listener {
         if (latest == null || newest) return;
         if (!CONFIG.getBoolean("update-notifier.on-join", true)) return;
         if (!event.getPlayer().hasPermission(instance.getName().toLowerCase() + ".update-notify")) return;
-        AxShulkers.getFoliaLib().getScheduler().runLaterAsync(t -> {
+        AxShulkers.getScheduler().runLaterAsync(t -> {
             event.getPlayer().sendMessage(getMessage());
         }, 50L);
     }

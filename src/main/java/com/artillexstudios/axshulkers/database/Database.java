@@ -9,10 +9,16 @@ import java.util.UUID;
 public interface Database {
 
     String getType();
+
     void setup();
+
     void saveShulker(@NotNull ItemStack[] items, @NotNull UUID uuid);
+
     void updateShulker(@NotNull ItemStack[] items, @NotNull UUID uuid);
+
     @Nullable ItemStack[] getShulker(@NotNull UUID uuid);
+
     void removeShulker(@NotNull UUID uuid);
+
     void disable();
 }

@@ -17,16 +17,17 @@ public class EntityDeathListener implements Listener {
     @EventHandler (ignoreCancelled = true)
     public void onEntityDamage(@NotNull EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Item)) return;
-        final ItemStack it = ((Item) event.getEntity()).getItemStack();
+
+        ItemStack it = ((Item) event.getEntity()).getItemStack();
         if (!ShulkerUtils.isShulker(it)) return;
 
-        if (CONFIG.getBoolean("undestoryable-shulkers")) {
+        if (CONFIG.getBoolean("undestroyable-shulkers")) {
             event.setCancelled(true);
             return;
         }
 
-        final String name = ShulkerUtils.getShulkerName(it);
-        final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
+        String name = ShulkerUtils.getShulkerName(it);
+        Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
         if (shulkerbox == null) return;
 
         if (it.getAmount() != 1) {

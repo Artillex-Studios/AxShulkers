@@ -14,7 +14,7 @@ public class AutoSaveScheduler {
     public static void start() {
         if (executor != null) executor.shutdown();
 
-        final int backupMinutes = AxShulkers.CONFIG.getInt("auto-save-minutes", 5);
+        int backupMinutes = AxShulkers.CONFIG.getInt("auto-save-minutes", 5);
 
         executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(() -> {

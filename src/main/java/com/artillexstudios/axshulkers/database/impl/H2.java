@@ -24,7 +24,6 @@ public class H2 implements Database {
 
     @Override
     public void setup() {
-
         try {
             conn = new JdbcConnection("jdbc:h2:./" + AxShulkers.getInstance().getDataFolder() + "/data", new Properties(), null, null, false);
             conn.setAutoCommit(true);
@@ -33,7 +32,6 @@ public class H2 implements Database {
         }
 
         final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `axshulkers_data` ( `uuid` VARCHAR(36) NOT NULL, `inventory` VARCHAR NOT NULL, PRIMARY KEY (`uuid`) );";
-
         try (PreparedStatement stmt = conn.prepareStatement(CREATE_TABLE)) {
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -44,7 +42,6 @@ public class H2 implements Database {
     @Override
     public void saveShulker(@NotNull ItemStack[] items, @NotNull UUID uuid) {
         final String sql = "INSERT INTO `axshulkers_data`(`uuid`, `inventory`) VALUES (?,?);";
-
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, uuid.toString());
             stmt.setString(2, SerializationUtils.invToBase64(items));
@@ -57,7 +54,6 @@ public class H2 implements Database {
     @Override
     public void updateShulker(@NotNull ItemStack[] items, @NotNull UUID uuid) {
         final String sql = "UPDATE `axshulkers_data` SET `inventory`= ? WHERE `uuid` = ?";
-
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(2, uuid.toString());
             stmt.setString(1, SerializationUtils.invToBase64(items));
@@ -71,30 +67,24 @@ public class H2 implements Database {
     @Nullable
     public ItemStack[] getShulker(@NotNull UUID uuid) {
         final String sql = "SELECT `inventory` FROM `axshulkers_data` WHERE `uuid` = ?;";
-
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, uuid.toString());
-
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next())
                     return SerializationUtils.invFromBase64(rs.getString(1));
             }
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
         return null;
     }
 
     @Override
     public void removeShulker(@NotNull UUID uuid) {
         final String sql = "DELETE FROM `axshulkers_data` WHERE `uuid` = ?;";
-
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, uuid.toString());
             stmt.executeUpdate();
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

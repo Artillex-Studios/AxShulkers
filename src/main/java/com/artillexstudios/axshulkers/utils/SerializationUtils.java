@@ -14,7 +14,6 @@ public class SerializationUtils {
 
     @NotNull
     public static String invToBase64(ItemStack[] stack) {
-
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
@@ -31,7 +30,6 @@ public class SerializationUtils {
 
     @Nullable
     public static ItemStack[] invFromBase64(@NotNull String data) {
-
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
             try (BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {

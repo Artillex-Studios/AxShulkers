@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,9 +67,7 @@ public class Shulkerbox {
 
     public void setItem(@NotNull ItemStack item) {
         final String name = ShulkerUtils.getShulkerName(item);
-
         if (!name.equals(title)) updateGuiTitle(name);
-
         this.it = item;
     }
 
@@ -85,25 +82,20 @@ public class Shulkerbox {
         title = name;
 
         final List<HumanEntity> viewers = new ArrayList<>(shulkerInventory.getViewers());
-        final Iterator<HumanEntity> viewerIterator = viewers.iterator();
 
         final Inventory shulkerInv = Bukkit.createInventory(null, InventoryType.SHULKER_BOX, ColorUtils.format(title));
         shulkerInv.setContents(shulkerInventory.getContents());
-
         this.shulkerInventory = shulkerInv;
 
-        while (viewerIterator.hasNext()) {
-            viewerIterator.next().closeInventory();
-            viewerIterator.remove();
+        for (HumanEntity viewer : viewers) {
+            viewer.closeInventory();
         }
     }
 
     public void close() {
         final List<HumanEntity> viewers = new ArrayList<>(shulkerInventory.getViewers());
-        final Iterator<HumanEntity> viewerIterator = viewers.iterator();
-        while (viewerIterator.hasNext()) {
-            viewerIterator.next().closeInventory();
-            viewerIterator.remove();
+        for (HumanEntity viewer : viewers) {
+            viewer.closeInventory();
         }
     }
 }

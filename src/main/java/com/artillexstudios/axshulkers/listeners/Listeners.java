@@ -13,11 +13,11 @@ import com.artillexstudios.axshulkers.listeners.impl.PlayerMoveListener;
 import com.artillexstudios.axshulkers.listeners.impl.ShulkerOpenListener;
 import org.bukkit.plugin.PluginManager;
 
-public class RegisterListeners {
-    private final AxShulkers main = AxShulkers.getInstance();
-    private final PluginManager plm = main.getServer().getPluginManager();
+public class Listeners {
 
-    public void register() {
+    public static void register() {
+        AxShulkers main = AxShulkers.getInstance();
+        PluginManager plm = main.getServer().getPluginManager();
         plm.registerEvents(new ShulkerOpenListener(), main);
         plm.registerEvents(new BlockPlaceListener(), main);
         plm.registerEvents(new InventoryClickListener(), main);

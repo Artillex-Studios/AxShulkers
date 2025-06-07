@@ -32,6 +32,7 @@ public class ShulkerOpenListener implements Listener {
 
     @EventHandler
     public void onInteract(@NotNull PlayerInteractEvent event) {
+        if (event.getAction() == Action.PHYSICAL) return;
         if (ShulkerUtils.hasShulkerOpen(event.getPlayer()) != null && event.getAction() != Action.LEFT_CLICK_AIR) {
             event.getPlayer().closeInventory();
         }
@@ -59,7 +60,7 @@ public class ShulkerOpenListener implements Listener {
                 if (!shulkerbox.getUUID().equals(ShulkerUtils.getShulkerUUID(event.getCurrentItem()))) continue;
 
                 event.setCancelled(true);
-                AxShulkers.getFoliaLib().getScheduler().runNextTick(t -> {
+                AxShulkers.getScheduler().runNextTick(t -> {
                     event.getWhoClicked().closeInventory();
                 });
                 return;
@@ -85,10 +86,11 @@ public class ShulkerOpenListener implements Listener {
             return false;
         }
 
-        if (cds.containsKey(player.getUniqueId()) && System.currentTimeMillis() - cds.get(player.getUniqueId()) < CONFIG.getLong("open-cooldown-milliseconds")) {
-            final Map<String, String> map = new HashMap<>();
-            map.put("%seconds%", Long.toString((CONFIG.getLong("open-cooldown-milliseconds") - System.currentTimeMillis() + cds.get(player.getUniqueId())) / 1000L + 1));
-            MessageUtils.sendMsgP(player, "cooldown", map);
+        long openCooldown = CONFIG.getLong("open-cooldown-milliseconds");
+        if (cds.containsKey(player.getUniqueId()) && System.currentTimeMillis() - cds.get(player.getUniqueId()) < openCooldown) {
+            MessageUtils.sendMsgP(player, "cooldown", Map.of(
+                    "%seconds%", "" + ((openCooldown - System.currentTimeMillis() + cds.get(player.getUniqueId())) / 1000L + 1)
+            ));
             return false;
         }
 
@@ -96,8 +98,9 @@ public class ShulkerOpenListener implements Listener {
 
         final String name = ShulkerUtils.getShulkerName(it);
 
-        AxShulkers.getFoliaLib().getScheduler().runAtLocation(player.getLocation(), t -> {
-            final Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
+        if (Shulkerboxes.getShulker(it, name) == null) return false;
+        AxShulkers.getScheduler().runAtLocation(player.getLocation(), t -> { // folia support
+            Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
             if (shulkerbox == null) return;
             if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) {
                 shulkerbox.close();

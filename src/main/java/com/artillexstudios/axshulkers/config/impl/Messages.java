@@ -20,13 +20,6 @@ public class Messages implements AbstractConfig {
         try {
             file = YamlDocument.create(new File(AxShulkers.getInstance().getDataFolder(), "messages.yml"), AxShulkers.getInstance().getResource("messages.yml"), GeneralSettings.builder().setUseDefaults(false).build(), LoaderSettings.DEFAULT, DumperSettings.DEFAULT, UpdaterSettings.builder().setKeepAll(true).setVersioning(new BasicVersioning("version")).build());
             file.update();
-            // fix typo
-            Integer old = file.getInt("open-cooldown-miliseconds", null);
-            if (old != null) {
-                file.set("open-cooldown-milliseconds", old);
-                file.remove("open-cooldown-miliseconds");
-            }
-            file.save();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
