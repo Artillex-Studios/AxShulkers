@@ -15,19 +15,20 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 
 public class ShulkerOpenListener implements Listener {
-    private final HashMap<UUID, Long> cds = new HashMap<>();
+    private final ConcurrentHashMap<UUID, Long> cds = new ConcurrentHashMap<>();
 
     @EventHandler
     public void onInteract(@NotNull PlayerInteractEvent event) {
@@ -36,7 +37,7 @@ public class ShulkerOpenListener implements Listener {
             event.getPlayer().closeInventory();
         }
 
-        if (event.getAction() != Action.RIGHT_CLICK_AIR) return;
+        if (event.getAction() != Action.RIGHT_CLICK_AIR || event.getHand() != EquipmentSlot.HAND) return;
 
         final Player player = event.getPlayer();
         if (openShulker(player, player.getInventory().getItemInMainHand())) event.setCancelled(true);
