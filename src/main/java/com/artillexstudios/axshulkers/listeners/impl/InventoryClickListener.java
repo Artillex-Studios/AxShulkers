@@ -81,7 +81,7 @@ public class InventoryClickListener implements Listener {
         final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getPlayer());
         if (shulker == null) return;
 
-        if (CONFIG.getBoolean("dsiplay-close-message")) {
+        if (CONFIG.getBoolean("display-close-message")) {
             MessageUtils.sendMsgP(event.getPlayer(), "close.message", Collections.singletonMap("%name%", shulker.getTitle()));
         }
 
