@@ -16,7 +16,7 @@ auto-clear-shulkers: false
 display-open-message: true
 
 # if this is on, the plugin will send a message to the player when a shulker box has been closed
-dsiplay-close-message: true
+display-close-message: true
 
 # this setting is not reloadable, you have to restart the server
 # how often should the plugin save shulker boxes from ram to the database?
