@@ -15,34 +15,35 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 
 public class ShulkerOpenListener implements Listener {
-    private final HashMap<UUID, Long> cds = new HashMap<>();
+    private final ConcurrentHashMap<UUID, Long> cds = new ConcurrentHashMap<>();
 
     @EventHandler
     public void onInteract(@NotNull PlayerInteractEvent event) {
         if (event.getAction() == Action.PHYSICAL) return;
-        if (ShulkerUtils.hasShulkerOpen(event.getPlayer()) != null && event.getAction() != Action.LEFT_CLICK_AIR) {
+        if (event.getAction() != Action.LEFT_CLICK_AIR && ShulkerUtils.hasShulkerOpen(event.getPlayer()) != null) {
             event.getPlayer().closeInventory();
         }
 
-        if (event.getAction() != Action.RIGHT_CLICK_AIR) return;
+        if (event.getAction() != Action.RIGHT_CLICK_AIR || event.getHand() != EquipmentSlot.HAND) return;
 
         final Player player = event.getPlayer();
         if (openShulker(player, player.getInventory().getItemInMainHand())) event.setCancelled(true);
     }
 
-    @EventHandler (priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW)
     public void onShulkerClick(@NotNull InventoryClickEvent event) {
         if (!event.getClick().equals(ClickType.RIGHT)) return;
         if (!CONFIG.getBoolean("opening-from-inventory.enabled")) return;
@@ -97,9 +98,9 @@ public class ShulkerOpenListener implements Listener {
 
         final String name = ShulkerUtils.getShulkerName(it);
 
-        if (Shulkerboxes.getShulker(it, name) == null) return false;
+        if (Shulkerboxes.getShulker(it, name, player) == null) return false;
         AxShulkers.getScheduler().runAtLocation(player.getLocation(), t -> { // folia support
-            Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
+            Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name, player);
             if (shulkerbox == null) return;
             if (player.getOpenInventory().getTopInventory().getType().equals(InventoryType.SHULKER_BOX)) {
                 shulkerbox.close();

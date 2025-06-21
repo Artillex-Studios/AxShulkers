@@ -30,7 +30,7 @@ import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
 
 public class InventoryClickListener implements Listener {
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onClick(@NotNull InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
         if (player.getOpenInventory().getTopInventory().getType() != InventoryType.SHULKER_BOX) return;
@@ -76,7 +76,7 @@ public class InventoryClickListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onClose(@NotNull InventoryCloseEvent event) {
         final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getPlayer());
         if (shulker == null) return;
@@ -89,12 +89,13 @@ public class InventoryClickListener implements Listener {
 
         ShulkerUtils.setShulkerContents(shulker.getItem(), event.getPlayer().getOpenInventory().getTopInventory(), false);
 
-        if (CONFIG.getBoolean("enable-obfuscation", false) || (!CONFIG.getBoolean("auto-clear-shulkers", false) && !(CONFIG.getBoolean("auto-clear-in-creative", true) && event.getPlayer().getGameMode().equals(GameMode.CREATIVE)))) return;
+        if (CONFIG.getBoolean("enable-obfuscation", false) || (!CONFIG.getBoolean("auto-clear-shulkers", false) && !(CONFIG.getBoolean("auto-clear-in-creative", true) && event.getPlayer().getGameMode().equals(GameMode.CREATIVE))))
+            return;
 
         // don't clear the shulker if it has changed
         if (!shulker.getReference().get().equals(shulker.getItem())) return;
         ShulkerUtils.removeShulkerUUID(shulker.getItem());
-        Shulkerboxes.removeShulkerbox(shulker.getUUID());
+        Shulkerboxes.removeShulkerbox(shulker.getUUID(), (Player) event.getPlayer());
         AxShulkers.getDB().removeShulker(shulker.getUUID());
     }
 }

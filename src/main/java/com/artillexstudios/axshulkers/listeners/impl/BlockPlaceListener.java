@@ -15,7 +15,7 @@ import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 
 public class BlockPlaceListener implements Listener {
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlace(@NotNull BlockPlaceEvent event) {
         if (!ShulkerUtils.isShulker(event.getItemInHand())) return;
 
@@ -32,7 +32,7 @@ public class BlockPlaceListener implements Listener {
 
         ItemStack it = event.getItemInHand().clone();
         String name = ShulkerUtils.getShulkerName(it);
-        Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
+        Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name, event.getPlayer());
         if (shulkerbox == null) return;
 
         shulkerbox.close();

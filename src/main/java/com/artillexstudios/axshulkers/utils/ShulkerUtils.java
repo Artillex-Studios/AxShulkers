@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
@@ -131,7 +132,8 @@ public class ShulkerUtils {
     public static String getShulkerName(@NotNull ItemStack it) {
         final ItemMeta meta = it.getItemMeta();
 
-        if (meta == null || meta.getDisplayName().isEmpty()) return ColorUtils.format(MESSAGES.getString("shulker-title"));
+        if (meta == null || meta.getDisplayName().isEmpty())
+            return ColorUtils.format(MESSAGES.getString("shulker-title"));
 
         return meta.getDisplayName();
     }
@@ -139,13 +141,16 @@ public class ShulkerUtils {
     @Nullable
     public static Shulkerbox hasShulkerOpen(@NotNull Player player) {
         Shulkerbox shulker = null;
-        for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
-            if (!shulkerbox.getShulkerInventory().equals(player.getOpenInventory().getTopInventory())) continue;
 
+        ConcurrentLinkedDeque<UUID> queue = Shulkerboxes.getPlayerShulkerMap().get(player.getUniqueId());
+        if (queue == null) return null;
+        for (UUID uuid : queue) {
+            Shulkerbox shulkerbox = Shulkerboxes.getShulkerMap().get(uuid);
+            if (shulkerbox == null || !shulkerbox.getShulkerInventory().equals(player.getOpenInventory().getTopInventory()))
+                continue;
             shulker = shulkerbox;
             break;
         }
-
         return shulker;
     }
 }

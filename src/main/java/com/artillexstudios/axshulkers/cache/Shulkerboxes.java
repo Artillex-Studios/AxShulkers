@@ -3,6 +3,7 @@ package com.artillexstudios.axshulkers.cache;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 
@@ -21,12 +23,37 @@ public class Shulkerboxes {
         return shulkerboxMap;
     }
 
+    private static final ConcurrentHashMap<UUID, ConcurrentLinkedDeque<UUID>> playerShulkerboxMap = new ConcurrentHashMap<>();
+
     public static void addShulkerbox(@NotNull Shulkerbox shulkerbox) {
         shulkerboxMap.put(shulkerbox.getUUID(), shulkerbox);
     }
 
+    public static ConcurrentHashMap<UUID, ConcurrentLinkedDeque<UUID>> getPlayerShulkerMap() {
+        return playerShulkerboxMap;
+    }
+
     public static void removeShulkerbox(@NotNull UUID uuid) {
         shulkerboxMap.remove(uuid);
+        playerShulkerboxMap.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+    }
+
+    public static void removeShulkerbox(@NotNull UUID uuid, @NotNull Player player) {
+        shulkerboxMap.remove(uuid);
+        ConcurrentLinkedDeque<UUID> queue = playerShulkerboxMap.get(player.getUniqueId());
+        if (queue != null && queue.remove(uuid) && queue.isEmpty()) {
+            playerShulkerboxMap.remove(player.getUniqueId());
+        }
+    }
+
+    @Nullable
+    public static Shulkerbox getShulker(@NotNull ItemStack it, @NotNull String name, Player player) {
+        Shulkerbox shulkerbox = getShulker(it, name);
+        if (shulkerbox != null && player != null) {
+            playerShulkerboxMap.computeIfAbsent(player.getUniqueId(), k -> new ConcurrentLinkedDeque<>());
+            playerShulkerboxMap.get(player.getUniqueId()).add(shulkerbox.getUUID());
+        }
+        return shulkerbox;
     }
 
     @Nullable
