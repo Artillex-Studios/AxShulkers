@@ -47,6 +47,7 @@ public class ShulkerOpenListener implements Listener {
     public void onShulkerClick(@NotNull InventoryClickEvent event) {
         if (!event.getClick().equals(ClickType.RIGHT)) return;
         if (!CONFIG.getBoolean("opening-from-inventory.enabled")) return;
+        if (!ShulkerUtils.isAllowedInventoryType(event.getView().getTopInventory())) return;
 
         final Player player = (Player) event.getWhoClicked();
         if (event.getClickedInventory() != null && !event.getClickedInventory().equals(event.getWhoClicked().getInventory())) {
