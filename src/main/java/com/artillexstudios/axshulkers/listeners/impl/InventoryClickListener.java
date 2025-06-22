@@ -81,7 +81,9 @@ public class InventoryClickListener implements Listener {
         final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getPlayer());
         if (shulker == null) return;
 
-        MessageUtils.sendMsgP(event.getPlayer(), "close.message", Collections.singletonMap("%name%", shulker.getTitle()));
+        if (CONFIG.getBoolean("display-close-message")) {
+            MessageUtils.sendMsgP(event.getPlayer(), "close.message", Collections.singletonMap("%name%", shulker.getTitle()));
+        }
 
         if (!MESSAGES.getString("close.sound").isEmpty()) {
             ((Player) event.getPlayer()).playSound(event.getPlayer().getLocation(), Sound.valueOf(MESSAGES.getString("close.sound")), 1f, 1f);
