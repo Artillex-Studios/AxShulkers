@@ -75,6 +75,15 @@ blacklisted-items:
 blacklisted-worlds:
   - "name_of_world"
 
+# inventories where player's can't open shulkers
+blacklisted-inventories:
+  - "Villager"
+  - "Composter"
+  - "Chiseled Bookshelf"
+  - "Jukebox"
+  - "Decorated Pot"
+  - "Crafter"
+
 # this setting is not reloadable, you have to restart the server
 # don't change this while you have data, however if you do, also change the nbt-tag setting to something else
 database:

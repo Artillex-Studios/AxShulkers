@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
@@ -16,10 +15,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.logging.Logger;
 
 import static com.artillexstudios.axshulkers.AxShulkers.CONFIG;
 import static com.artillexstudios.axshulkers.AxShulkers.MESSAGES;
@@ -45,33 +44,14 @@ public class ShulkerUtils {
             Material.PINK_SHULKER_BOX
     );
 
-    private static final Set<InventoryType> inventories = new HashSet<>();
-    static {
-        addType("BARREL");
-        inventories.add(InventoryType.CRAFTING);
-        inventories.add(InventoryType.CREATIVE);
-        inventories.add(InventoryType.CHEST);
-        inventories.add(InventoryType.DISPENSER);
-        inventories.add(InventoryType.DROPPER);
-        inventories.add(InventoryType.ENDER_CHEST);
-        inventories.add(InventoryType.HOPPER);
-        inventories.add(InventoryType.PLAYER);
-        inventories.add(InventoryType.SHULKER_BOX);
-    }
-
-    private static void addType(String str) {
-        try {
-            inventories.add(InventoryType.valueOf(str));
-        } catch (Exception ignored) {}
-    }
-
     public static boolean isShulker(@Nullable ItemStack it) {
         if (it == null) return false;
         return shulkers.contains(it.getType());
     }
 
     public static boolean isAllowedInventoryType(@NotNull Inventory inventory) {
-        return inventories.contains(inventory.getType());
+        Logger.getLogger(ShulkerUtils.class.getName()).info(inventory.getType().getDefaultTitle());
+        return !CONFIG.getStringList("blacklisted-inventories").contains(inventory.getType().getDefaultTitle());
     }
 
     @NotNull
