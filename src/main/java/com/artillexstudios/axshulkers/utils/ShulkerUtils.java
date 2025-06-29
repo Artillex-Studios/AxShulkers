@@ -50,7 +50,6 @@ public class ShulkerUtils {
     }
 
     public static boolean isAllowedInventoryType(@NotNull Inventory inventory) {
-        Logger.getLogger(ShulkerUtils.class.getName()).info(inventory.getType().getDefaultTitle());
         return !CONFIG.getStringList("blacklisted-inventories").contains(inventory.getType().getDefaultTitle());
     }
 
