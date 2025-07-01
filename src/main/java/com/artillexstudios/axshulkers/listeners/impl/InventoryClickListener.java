@@ -80,16 +80,25 @@ public class InventoryClickListener implements Listener {
     public void onClose(@NotNull InventoryCloseEvent event) {
         final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getPlayer());
         if (shulker == null) return;
+        Player player = (Player) event.getPlayer();
 
-        MessageUtils.sendMsgP(event.getPlayer(), "close.message", Collections.singletonMap("%name%", shulker.getTitle()));
+        MessageUtils.sendMsgP(player, "close.message", Collections.singletonMap("%name%", shulker.getTitle()));
 
-        if (!MESSAGES.getString("close.sound").isEmpty()) {
-            ((Player) event.getPlayer()).playSound(event.getPlayer().getLocation(), Sound.valueOf(MESSAGES.getString("close.sound")), 1f, 1f);
+        String closeSound = MESSAGES.getString("close.sound", "");
+        if (!closeSound.isEmpty()) {
+            try {
+                Sound sound = Sound.valueOf(closeSound.toUpperCase());
+                player.playSound(player.getLocation(), sound, 1f, 1f);
+            } catch (Exception e) {
+                try {
+                    player.playSound(player.getLocation(), closeSound, 1f, 1f);
+                } catch (Exception ignored) {}
+            }
         }
 
-        ShulkerUtils.setShulkerContents(shulker.getItem(), event.getPlayer().getOpenInventory().getTopInventory(), false);
+        ShulkerUtils.setShulkerContents(shulker.getItem(), player.getOpenInventory().getTopInventory(), false);
 
-        if (CONFIG.getBoolean("enable-obfuscation", false) || (!CONFIG.getBoolean("auto-clear-shulkers", false) && !(CONFIG.getBoolean("auto-clear-in-creative", true) && event.getPlayer().getGameMode().equals(GameMode.CREATIVE)))) return;
+        if (CONFIG.getBoolean("enable-obfuscation", false) || (!CONFIG.getBoolean("auto-clear-shulkers", false) && !(CONFIG.getBoolean("auto-clear-in-creative", true) && player.getGameMode().equals(GameMode.CREATIVE)))) return;
 
         // don't clear the shulker if it has changed
         if (!shulker.getReference().get().equals(shulker.getItem())) return;
