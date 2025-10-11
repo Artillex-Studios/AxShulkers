@@ -3,6 +3,8 @@ package com.artillexstudios.axshulkers.listeners.impl;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
+import com.artillexstudios.axshulkers.safety.SafetyManager;
+import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,6 +20,12 @@ public class BlockPlaceListener implements Listener {
     @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlace(@NotNull BlockPlaceEvent event) {
         if (!ShulkerUtils.isShulker(event.getItemInHand())) return;
+
+        if (!SafetyManager.PLACING.get()) {
+            MessageUtils.sendMsgP(event.getPlayer(), "safety");
+            event.setCancelled(true);
+            return;
+        }
 
         if (CONFIG.getBoolean("disable-shulker-placing")) {
             event.setCancelled(true);

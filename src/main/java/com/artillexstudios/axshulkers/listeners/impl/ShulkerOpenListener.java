@@ -3,6 +3,7 @@ package com.artillexstudios.axshulkers.listeners.impl;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
+import com.artillexstudios.axshulkers.safety.SafetyManager;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import org.bukkit.Sound;
@@ -39,6 +40,12 @@ public class ShulkerOpenListener implements Listener {
         if (event.getAction() != Action.RIGHT_CLICK_AIR) return;
 
         final Player player = event.getPlayer();
+
+        if (!SafetyManager.CLICK_OPENING.get()) {
+            MessageUtils.sendMsgP(event.getPlayer(), "safety");
+            return;
+        }
+
         if (openShulker(player, player.getInventory().getItemInMainHand())) event.setCancelled(true);
     }
 
@@ -68,6 +75,12 @@ public class ShulkerOpenListener implements Listener {
         }
 
         if (event.getCurrentItem() == null) return;
+
+        if (!SafetyManager.INVENTORY_OPENING.get()) {
+            MessageUtils.sendMsgP(event.getWhoClicked(), "safety");
+            return;
+        }
+
         if (openShulker(player, event.getCurrentItem())) event.setCancelled(true);
     }
 

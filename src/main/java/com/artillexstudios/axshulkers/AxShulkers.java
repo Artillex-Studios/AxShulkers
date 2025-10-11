@@ -13,6 +13,7 @@ import com.artillexstudios.axshulkers.database.impl.H2;
 import com.artillexstudios.axshulkers.database.impl.SQLite;
 import com.artillexstudios.axshulkers.libraries.Libraries;
 import com.artillexstudios.axshulkers.listeners.Listeners;
+import com.artillexstudios.axshulkers.safety.SafetyManager;
 import com.artillexstudios.axshulkers.schedulers.AutoSaveScheduler;
 import com.artillexstudios.axshulkers.utils.ColorUtils;
 import com.artillexstudios.axshulkers.utils.UpdateNotifier;
@@ -87,20 +88,16 @@ public final class AxShulkers extends JavaPlugin {
         abstractMessages.setup();
         MESSAGES = abstractMessages.getConfig();
 
-
         switch (CONFIG.getString("database.type").toLowerCase()) {
-            case "h2":
-                database = new H2();
-                break;
-            default:
-                database = new SQLite();
-                break;
+            case "h2" -> database = new H2();
+            default -> database = new SQLite();
         }
 
         database.setup();
         databaseQueue = new DatabaseQueue("AxShulkers-Datastore-thread");
         Listeners.register();
         AutoSaveScheduler.start();
+        SafetyManager.start();
 
         PluginCommand command = this.getCommand("axshulkers");
         command.setExecutor(new Commands());
@@ -114,6 +111,7 @@ public final class AxShulkers extends JavaPlugin {
     @Override
     public void onDisable() {
         AutoSaveScheduler.stop();
+        SafetyManager.stop();
 
         for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
             AxShulkers.getDB().updateShulker(shulkerbox.getShulkerInventory().getContents(), shulkerbox.getUUID());

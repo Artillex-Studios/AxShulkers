@@ -35,6 +35,7 @@ errors:
   moving-disabled: "&#FF3333You can't move while a shulker is open!"
 
 update-notifier: "&#DD88FFThere is a new version of AxShulkers available! &#DDDDDD(&#FFFFFFcurrent: &#FF0000%current% &#DDDDDD| &#FFFFFFlatest: &#00FF00%latest%&#DDDDDD)"
+safety: "&#FF0000This feature has been disabled for safety reasons and updating the plugin is required, please contact the server administrators."
 
 # do not change this
-version: 5
+version: 6

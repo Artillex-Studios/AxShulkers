@@ -88,5 +88,9 @@ update-notifier:
   # if enabled, it will broadcast the update message to all players who have the <plugin-name>.update-notify permission
   on-join: true
 
+# in case an exploit is found, if enabled, the plugin will disable some (or all) features to prevent people from abusing them on your server
+# requires a restart to change
+enable-safety: true
+
 # do not change this
-version: 12
+version: 13

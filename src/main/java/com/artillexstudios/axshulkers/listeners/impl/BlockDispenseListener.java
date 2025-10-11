@@ -3,6 +3,8 @@ package com.artillexstudios.axshulkers.listeners.impl;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
+import com.artillexstudios.axshulkers.safety.SafetyManager;
+import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,6 +23,11 @@ public class BlockDispenseListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onDispense(@NotNull BlockDispenseEvent event) {
         if (!ShulkerUtils.isShulker(event.getItem())) return;
+
+        if (!SafetyManager.DISPENSE.get()) {
+            event.setCancelled(true);
+            return;
+        }
 
         if (CONFIG.getBoolean("disable-shulker-dispensing")) {
             event.setCancelled(true);
