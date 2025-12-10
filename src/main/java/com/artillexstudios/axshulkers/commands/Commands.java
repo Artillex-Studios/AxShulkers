@@ -62,7 +62,9 @@ public class Commands implements CommandExecutor {
 
                 ShulkerUtils.removeShulkerUUID(it);
                 Shulkerboxes.removeShulkerbox(uuid);
-                AxShulkers.getDB().removeShulker(uuid);
+                AxShulkers.getDatabaseQueue().submit(() -> {
+                    AxShulkers.getDB().removeShulker(uuid);
+                });
 
                 MessageUtils.sendMsgP(sender, "cleared");
                 return true;

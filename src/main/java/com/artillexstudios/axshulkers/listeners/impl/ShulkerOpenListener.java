@@ -33,7 +33,7 @@ public class ShulkerOpenListener implements Listener {
     @EventHandler
     public void onInteract(@NotNull PlayerInteractEvent event) {
         if (event.getAction() == Action.PHYSICAL) return;
-        if (ShulkerUtils.hasShulkerOpen(event.getPlayer()) != null && event.getAction() != Action.LEFT_CLICK_AIR) {
+        if (ShulkerUtils.getOpenShulker(event.getPlayer()) != null && event.getAction() != Action.LEFT_CLICK_AIR) {
             event.getPlayer().closeInventory();
         }
 

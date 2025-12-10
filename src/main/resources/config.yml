@@ -6,12 +6,6 @@
 
 prefix: "&#CC00FF&lAxShulkers &7» "
 
-# EXPERIEMENTAL (this option was well tested, however it is still less safe than the default system)
-# this setting will remove the safety UUID from the shulkers after they are closed
-# it relies on java WeakReference-s to protect you from dupes
-# this also force disables 'enable-obfuscation'
-auto-clear-shulkers: false
-
 # this setting is not reloadable, you have to restart the server
 # how often should the plugin save shulker boxes from ram to the database?
 # this is in minutes
@@ -80,6 +74,12 @@ blacklisted-worlds:
 database:
   # h2, sqlite
   type: "h2"
+
+# this setting is experimental, we don't recommend using this on production servers due to potential exploits that it might allow
+# if enabled, it will remove the safety UUID from the shulkers after they are closed, this solves most annoyances that the original dupe protection causes
+# this also force disables 'enable-obfuscation'
+# if you still decide to enable this, make sure to report any issues!
+auto-clear-shulkers: false
 
 # should be plugin notify you if there is a new update?
 update-notifier:

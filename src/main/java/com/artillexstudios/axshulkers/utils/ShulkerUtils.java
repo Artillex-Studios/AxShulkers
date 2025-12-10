@@ -113,10 +113,8 @@ public class ShulkerUtils {
     }
 
     public static void setShulkerContents(@NotNull ItemStack it, @NotNull Inventory inventory, boolean bypass) {
-        if (!(it.getItemMeta() instanceof BlockStateMeta)) return;
-
-        final BlockStateMeta im = (BlockStateMeta) it.getItemMeta();
-        final ShulkerBox shulker = (ShulkerBox) im.getBlockState();
+        if (!(it.getItemMeta() instanceof BlockStateMeta im)) return;
+        if (!(im.getBlockState() instanceof ShulkerBox shulker)) return;
 
         if (!bypass && CONFIG.getBoolean("enable-obfuscation", false) && !CONFIG.getBoolean("auto-clear-shulkers", false)) {
             shulker.getInventory().clear();
@@ -129,10 +127,8 @@ public class ShulkerUtils {
     }
 
     public static void clearShulkerContents(@NotNull ItemStack it) {
-        if (!(it.getItemMeta() instanceof BlockStateMeta)) return;
-
-        final BlockStateMeta im = (BlockStateMeta) it.getItemMeta();
-        final ShulkerBox shulker = (ShulkerBox) im.getBlockState();
+        if (!(it.getItemMeta() instanceof BlockStateMeta im)) return;
+        if (!(im.getBlockState() instanceof ShulkerBox shulker)) return;
 
         shulker.getInventory().clear();
 
@@ -141,37 +137,33 @@ public class ShulkerUtils {
     }
 
     public static void setShulkerContents(@NotNull Block block, @NotNull Inventory inventory) {
-        final ShulkerBox shulker = (ShulkerBox) block.getState();
+        if (!(block.getState() instanceof ShulkerBox shulker)) return;
 
         shulker.getInventory().setContents(inventory.getContents());
         block.setBlockData(shulker.getBlockData());
     }
 
     public static void clearShulkerContents(@NotNull Block block) {
-        final ShulkerBox shulker = (ShulkerBox) block.getState();
+        if (!(block.getState() instanceof ShulkerBox shulker)) return;
 
         shulker.getInventory().clear();
         block.setBlockData(shulker.getBlockData());
     }
 
     public static String getShulkerName(@NotNull ItemStack it) {
-        final ItemMeta meta = it.getItemMeta();
-
-        if (meta == null || meta.getDisplayName().isEmpty()) return ColorUtils.format(MESSAGES.getString("shulker-title"));
-
+        ItemMeta meta = it.getItemMeta();
+        if (meta == null || meta.getDisplayName().isEmpty()) {
+            return ColorUtils.format(MESSAGES.getString("shulker-title"));
+        }
         return meta.getDisplayName();
     }
 
     @Nullable
-    public static Shulkerbox hasShulkerOpen(@NotNull Player player) {
-        Shulkerbox shulker = null;
+    public static Shulkerbox getOpenShulker(@NotNull Player player) {
         for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
             if (!shulkerbox.getShulkerInventory().equals(player.getOpenInventory().getTopInventory())) continue;
-
-            shulker = shulkerbox;
-            break;
+            return shulkerbox;
         }
-
-        return shulker;
+        return null;
     }
 }

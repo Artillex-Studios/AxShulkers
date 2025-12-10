@@ -67,7 +67,7 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler
     public void onDrag(@NotNull InventoryDragEvent event) {
-        final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getWhoClicked());
+        final Shulkerbox shulker = ShulkerUtils.getOpenShulker((Player) event.getWhoClicked());
         if (shulker == null) return;
 
         if (!event.getWhoClicked().hasPermission("axshulkers.modify")) {
@@ -78,7 +78,7 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onClose(@NotNull InventoryCloseEvent event) {
-        final Shulkerbox shulker = ShulkerUtils.hasShulkerOpen((Player) event.getPlayer());
+        final Shulkerbox shulker = ShulkerUtils.getOpenShulker((Player) event.getPlayer());
         if (shulker == null) return;
 
         MessageUtils.sendMsgP(event.getPlayer(), "close.message", Collections.singletonMap("%name%", shulker.getTitle()));
@@ -95,6 +95,8 @@ public class InventoryClickListener implements Listener {
         if (!shulker.getReference().get().equals(shulker.getItem())) return;
         ShulkerUtils.removeShulkerUUID(shulker.getItem());
         Shulkerboxes.removeShulkerbox(shulker.getUUID());
-        AxShulkers.getDB().removeShulker(shulker.getUUID());
+        AxShulkers.getDatabaseQueue().submit(() -> {
+            AxShulkers.getDB().removeShulker(shulker.getUUID());
+        });
     }
 }
