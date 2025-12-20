@@ -160,8 +160,9 @@ public class ShulkerUtils {
 
     @Nullable
     public static Shulkerbox getOpenShulker(@NotNull Player player) {
+        Inventory inventory = player.getOpenInventory().getTopInventory();
         for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
-            if (!shulkerbox.getShulkerInventory().equals(player.getOpenInventory().getTopInventory())) continue;
+            if (!shulkerbox.getShulkerInventory().equals(inventory)) continue;
             return shulkerbox;
         }
         return null;
