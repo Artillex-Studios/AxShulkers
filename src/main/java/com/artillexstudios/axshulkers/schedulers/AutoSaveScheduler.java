@@ -4,6 +4,11 @@ import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -18,8 +23,17 @@ public class AutoSaveScheduler {
 
         executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(() -> {
+            List<UUID> forRemoval = new ArrayList<>();
             for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
                 AxShulkers.getDB().updateShulker(shulkerbox.getShulkerInventory().getContents(), shulkerbox.getUUID());
+
+                boolean inactive = System.currentTimeMillis() - shulkerbox.getLastOpen() > Duration.of(30, ChronoUnit.MINUTES).toMillis();
+                if (inactive && shulkerbox.getShulkerInventory().getViewers().isEmpty()) {
+                    forRemoval.add(shulkerbox.getUUID());
+                }
+            }
+            for (UUID uuid : forRemoval) {
+                Shulkerboxes.getShulkerMap().remove(uuid);
             }
         }, backupMinutes, backupMinutes, TimeUnit.MINUTES);
     }

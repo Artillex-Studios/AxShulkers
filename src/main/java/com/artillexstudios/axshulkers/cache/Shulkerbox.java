@@ -24,6 +24,7 @@ public class Shulkerbox {
     private ItemStack it;
     private String title;
     private WeakReference<ItemStack> reference;
+    private long lastOpen;
 
     public Shulkerbox(UUID uuid, Inventory shulkerInventory, ItemStack it, String title) {
         this.uuid = uuid;
@@ -40,6 +41,7 @@ public class Shulkerbox {
 
     public void openShulkerFor(@NotNull Player player) {
         player.openInventory(shulkerInventory);
+        lastOpen = System.currentTimeMillis();
     }
 
     @NotNull
@@ -63,6 +65,10 @@ public class Shulkerbox {
 
     public String getTitle() {
         return title;
+    }
+
+    public long getLastOpen() {
+        return lastOpen;
     }
 
     public void setItem(@NotNull ItemStack item) {

@@ -1,7 +1,6 @@
 package com.artillexstudios.axshulkers.utils;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class PermissionUtils {
