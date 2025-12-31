@@ -33,20 +33,20 @@ public class ShulkerOpenListener implements Listener {
     @EventHandler
     public void onInteract(@NotNull PlayerInteractEvent event) {
         if (event.getAction() == Action.PHYSICAL) return;
-        if (ShulkerUtils.getOpenShulker(event.getPlayer()) != null && event.getAction() != Action.LEFT_CLICK_AIR) {
-            event.getPlayer().closeInventory();
+        Player player = event.getPlayer();
+        if (ShulkerUtils.getOpenShulker(player) != null) {
+            player.closeInventory();
         }
 
         if (event.getAction() != Action.RIGHT_CLICK_AIR) return;
-
-        final Player player = event.getPlayer();
 
         if (!SafetyManager.CLICK_OPENING.get()) {
             MessageUtils.sendMsgP(event.getPlayer(), "safety");
             return;
         }
 
-        if (openShulker(player, player.getInventory().getItemInMainHand())) event.setCancelled(true);
+        boolean opened = openShulker(player, event.getItem());
+        if (opened) event.setCancelled(true);
     }
 
     @EventHandler (priority = EventPriority.LOW)
@@ -81,10 +81,11 @@ public class ShulkerOpenListener implements Listener {
             return;
         }
 
-        if (openShulker(player, event.getCurrentItem())) event.setCancelled(true);
+        boolean opened = openShulker(player, event.getCurrentItem());
+        if (opened) event.setCancelled(true);
     }
 
-    private boolean openShulker(@NotNull Player player, @NotNull ItemStack it) {
+    private boolean openShulker(@NotNull Player player, ItemStack it) {
         if (!player.hasPermission("axshulkers.use")) return false;
         if (!ShulkerUtils.isShulker(it)) return false;
         if (it.getAmount() > 1) {
@@ -127,7 +128,7 @@ public class ShulkerOpenListener implements Listener {
 
             MessageUtils.sendMsgP(player, "open.message", Collections.singletonMap("%name%", shulkerbox.getTitle()));
 
-            if (!MESSAGES.getString("open.sound").isEmpty()) {
+            if (!MESSAGES.getString("open.sound", "").isBlank()) {
                 player.playSound(player.getLocation(), Sound.valueOf(MESSAGES.getString("open.sound")), 1f, 1f);
             }
         });
