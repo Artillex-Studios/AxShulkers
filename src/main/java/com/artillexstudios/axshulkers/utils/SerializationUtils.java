@@ -5,10 +5,10 @@ import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 
 public class SerializationUtils {
 
@@ -20,7 +20,7 @@ public class SerializationUtils {
             dataOutput.writeObject(stack.clone());
 
             dataOutput.close();
-            return Base64Coder.encodeLines(outputStream.toByteArray());
+            return Base64.getEncoder().encodeToString(outputStream.toByteArray());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,7 +31,7 @@ public class SerializationUtils {
     @Nullable
     public static ItemStack[] invFromBase64(@NotNull String data) {
         try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(data.replace("\n", "")));
             try (BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
                 return (ItemStack[]) dataInput.readObject();
             }
