@@ -31,7 +31,7 @@ public class SerializationUtils {
     @Nullable
     public static ItemStack[] invFromBase64(@NotNull String data) {
         try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(data.replace("\n", "")));
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.getMimeDecoder().decode(data.replaceAll("\\s", "")));
             try (BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
                 return (ItemStack[]) dataInput.readObject();
             }
