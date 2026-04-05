@@ -105,7 +105,8 @@ public final class AxShulkers extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage(ColorUtils.format("&#CC00FF[AxShulkers] Loaded plugin! Using &f" + database.getType() + " &#CC00FFdatabase to store data!"));
 
-        if (CONFIG.getBoolean("update-notifier.enabled", true)) new UpdateNotifier(this, 4666);
+        UpdateNotifier.init(CONFIG, MESSAGES);
+        if (CONFIG.getBoolean("update-notifier.enabled", true)) new UpdateNotifier();
     }
 
     @Override
