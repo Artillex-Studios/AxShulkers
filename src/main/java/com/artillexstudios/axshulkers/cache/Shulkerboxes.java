@@ -2,6 +2,7 @@ package com.artillexstudios.axshulkers.cache;
 
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
+import com.artillexstudios.axshulkers.utils.StackableShulkerSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -32,6 +33,9 @@ public class Shulkerboxes {
     @Nullable
     public static Shulkerbox getShulker(@NotNull ItemStack it, @NotNull String name) {
         if (!ShulkerUtils.isShulker(it)) return null;
+        if (ShulkerUtils.shouldIgnoreStackedShulker(it)) return null;
+        // Any shulker AxShulkers manages gets a unique backing inventory, so it must not merge with other items.
+        StackableShulkerSupport.makeUnstackable(it);
         final UUID uuid = ShulkerUtils.getShulkerUUID(it);
 
         if (uuid == null) {

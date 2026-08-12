@@ -27,6 +27,53 @@ opening-from-inventory:
   # should this also be possible in the player's ender chest?
   open-from-enderchest: true
 
+# Optional support for servers that intentionally allow empty shulker boxes to stack.
+# This uses the modern item max_stack_size component through ItemMeta#setMaxStackSize.
+# Version requirement:
+# - Works on modern component-capable servers that provide ItemMeta#setMaxStackSize, such as Paper/Purpur 1.20.5+.
+# - Works on 26.2 servers.
+# - Does not work on older servers without that method.
+# AxShulkers still compiles against older server APIs. If this is enabled on an unsupported server,
+# AxShulkers logs a warning, ignores this section, and keeps its normal behavior.
+#
+# When enabled, AxShulkers owns the empty-shulker stacking behavior:
+# - empty shulker boxes are given a max stack size
+# - filled shulker boxes are kept unstackable
+# - shulker ItemStacks with an amount greater than 1 are ignored by AxShulkers' open/database logic
+# - AxShulkers-managed shulkers that are empty in the database are migrated back to normal stackable empty shulkers
+#
+# Important behavior notes:
+# - Only empty shulkers are made stackable.
+# - Shulkers only stack with other shulkers whose item data matches, including name, lore, color, and components.
+# - Offline player inventories are not scanned directly; they are updated when the player next joins.
+# - If this feature is disabled, AxShulkers leaves any existing max_stack_size components alone.
+stacked-shulker-support:
+  # Master switch for this feature.
+  # Leave this false unless your server intentionally supports stackable empty shulkers.
+  # Set this true if you want AxShulkers to replace the stackable-shulker datapack behavior.
+  enabled: false
+
+  # Max stack size applied to empty shulker boxes.
+  # Minecraft currently accepts values from 1 to 99; AxShulkers clamps this value into that range.
+  # Use 64 for normal item-stack behavior.
+  empty-stack-size: 64
+
+  # If true, AxShulkers will clean up its own database entries for shulkers that are now empty.
+  # This fixes the case where an empty shulker was previously opened by AxShulkers and therefore still has an AxShulkers UUID.
+  # When an empty managed shulker is found, AxShulkers removes its UUID, deletes the database entry, clears stored contents,
+  # and applies the configured empty stack size so it can merge with matching empty shulkers again.
+  # Filled managed shulkers are never migrated.
+  migrate-empty-managed-shulkers: true
+
+  # If true, AxShulkers scans online players' inventories and ender chests.
+  # Scans run when the plugin enables, when /axshulkers reload is used, when a player joins,
+  # and after inventory clicks/drags that may have moved shulkers.
+  scan-player-inventories: true
+
+  # If true, AxShulkers scans inventories that players open, such as chests, barrels, hoppers, and shulker-box inventories.
+  # This updates stored containers gradually as players actually look inside them instead of scanning every container in the world.
+  scan-opened-inventories: true
+
 # if this is true then players won't be able to open shulkers from their hand
 disable-shulker-opening: false
 # if this is true then players won't be able to place them down (they can still open them)
@@ -93,4 +140,4 @@ update-notifier:
 enable-safety: true
 
 # do not change this
-version: 13
+version: 14

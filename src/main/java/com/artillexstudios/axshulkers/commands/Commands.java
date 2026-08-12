@@ -7,6 +7,7 @@ import com.artillexstudios.axshulkers.utils.ColorUtils;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.PermissionUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
+import com.artillexstudios.axshulkers.utils.StackableShulkerSupport;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,6 +33,7 @@ public class Commands implements CommandExecutor {
 
                 AxShulkers.getAbstractConfig().reloadConfig();
                 AxShulkers.getAbstractMessages().reloadConfig();
+                StackableShulkerSupport.scanOnlinePlayers();
 
                 for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
                     AxShulkers.getDB().updateShulker(shulkerbox.getShulkerInventory().getContents(), shulkerbox.getUUID());

@@ -11,6 +11,7 @@ import com.artillexstudios.axshulkers.listeners.impl.PlayerDropItemListener;
 import com.artillexstudios.axshulkers.listeners.impl.PlayerInteractListener;
 import com.artillexstudios.axshulkers.listeners.impl.PlayerMoveListener;
 import com.artillexstudios.axshulkers.listeners.impl.ShulkerOpenListener;
+import com.artillexstudios.axshulkers.listeners.impl.StackableShulkerListener;
 import org.bukkit.plugin.PluginManager;
 
 public class Listeners {
@@ -28,5 +29,6 @@ public class Listeners {
         plm.registerEvents(new EntityDeathListener(), main);
         plm.registerEvents(new PlayerMoveListener(), main);
         plm.registerEvents(new PlayerInteractListener(), main);
+        plm.registerEvents(new StackableShulkerListener(), main);
     }
 }
