@@ -46,15 +46,15 @@ public enum SafetyManager {
 
     private static void check() {
         String str = "https://api.artillex-studios.com/safety/?plugin=%s&version=%s&mc=%s".formatted(instance.getName(), instance.getDescription().getVersion(), Bukkit.getBukkitVersion());
-        String body;
+        JsonArray disabled;
         try {
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(str)).GET().build();
-            body = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
-        } catch (Exception ignored) {
+            String body = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+            disabled = gson.fromJson(body, JsonArray.class);
+        } catch (Exception ex) {
             return;
         }
 
-        JsonArray disabled = gson.fromJson(body, JsonArray.class);
         for (SafetyManager value : SafetyManager.values()) {
             value.set(true);
         }
