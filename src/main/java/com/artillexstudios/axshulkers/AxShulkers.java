@@ -16,6 +16,7 @@ import com.artillexstudios.axshulkers.listeners.Listeners;
 import com.artillexstudios.axshulkers.safety.SafetyManager;
 import com.artillexstudios.axshulkers.schedulers.AutoSaveScheduler;
 import com.artillexstudios.axshulkers.utils.ColorUtils;
+import com.artillexstudios.axshulkers.utils.StackableShulkerSupport;
 import com.artillexstudios.axshulkers.utils.UpdateNotifier;
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.impl.PlatformScheduler;
@@ -96,6 +97,7 @@ public final class AxShulkers extends JavaPlugin {
         database.setup();
         databaseQueue = new DatabaseQueue("AxShulkers-Datastore-thread");
         Listeners.register();
+        StackableShulkerSupport.scanOnlinePlayers();
         AutoSaveScheduler.start();
         SafetyManager.start();
 

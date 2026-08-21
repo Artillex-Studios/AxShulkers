@@ -33,6 +33,9 @@ public class BlockDispenseListener implements Listener {
             return;
         }
 
+        // Stacked empty shulkers are not AxShulkers-managed; dispense them with normal server behavior.
+        if (ShulkerUtils.shouldIgnoreStackedShulker(event.getItem())) return;
+
         if (event.getItem().getAmount() != 1) {
             event.getItem().setAmount(1);
             event.setCancelled(true);
