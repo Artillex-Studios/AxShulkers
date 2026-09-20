@@ -6,6 +6,7 @@ import com.artillexstudios.axshulkers.cache.Shulkerboxes;
 import com.artillexstudios.axshulkers.utils.BlacklistUtils;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.ShulkerUtils;
+import com.artillexstudios.axshulkers.utils.StackableShulkerSupport;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -88,6 +89,8 @@ public class InventoryClickListener implements Listener {
         }
 
         ShulkerUtils.setShulkerContents(shulker.getItem(), event.getPlayer().getOpenInventory().getTopInventory(), false);
+        // If the player emptied this shulker, drop AxShulkers tracking and make it stackable again.
+        if (StackableShulkerSupport.migrateClosedShulker(shulker)) return;
 
         if (CONFIG.getBoolean("enable-obfuscation", false) || (!CONFIG.getBoolean("auto-clear-shulkers", false) && !(CONFIG.getBoolean("auto-clear-in-creative", true) && event.getPlayer().getGameMode().equals(GameMode.CREATIVE)))) return;
 

@@ -15,6 +15,8 @@ public class PlayerDropItemListener implements Listener {
     public void onDrop(@NotNull PlayerDropItemEvent event) {
         ItemStack it = event.getItemDrop().getItemStack();
         if (!ShulkerUtils.isShulker(it)) return;
+        // Dropped stacked empty shulkers have no AxShulkers backing inventory to save.
+        if (ShulkerUtils.shouldIgnoreStackedShulker(it)) return;
 
         String name = ShulkerUtils.getShulkerName(it);
         Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);

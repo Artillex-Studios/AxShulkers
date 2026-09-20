@@ -32,6 +32,9 @@ public class BlockPlaceListener implements Listener {
             return;
         }
 
+        // Let normal item handling process intentionally stackable empty shulkers.
+        if (ShulkerUtils.shouldIgnoreStackedShulker(event.getItemInHand())) return;
+
         if (event.getItemInHand().getAmount() != 1) {
             event.setCancelled(true);
             event.getItemInHand().setAmount(1);

@@ -69,6 +69,15 @@ public class ShulkerUtils {
         return shulkers.contains(it.getType());
     }
 
+    public static boolean isStackedShulker(@Nullable ItemStack it) {
+        return isShulker(it) && it.getAmount() > 1;
+    }
+
+    public static boolean shouldIgnoreStackedShulker(@Nullable ItemStack it) {
+        // Only bypass legacy stack normalization when the optional modern stacking support can actually run.
+        return StackableShulkerSupport.canApply() && isStackedShulker(it);
+    }
+
     public static boolean isAllowedInventoryType(@NotNull Inventory inventory) {
         return inventories.contains(inventory.getType());
     }

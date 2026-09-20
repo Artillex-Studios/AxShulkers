@@ -88,6 +88,8 @@ public class ShulkerOpenListener implements Listener {
     private boolean openShulker(@NotNull Player player, ItemStack it) {
         if (!player.hasPermission("axshulkers.use")) return false;
         if (!ShulkerUtils.isShulker(it)) return false;
+        // Stacked shulkers are normal empty items; split one off before AxShulkers manages it.
+        if (ShulkerUtils.shouldIgnoreStackedShulker(it)) return false;
         if (it.getAmount() > 1) {
             it.setAmount(1);
             return false;

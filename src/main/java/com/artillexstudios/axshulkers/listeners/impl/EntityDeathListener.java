@@ -26,6 +26,9 @@ public class EntityDeathListener implements Listener {
             return;
         }
 
+        // Stacked empty shulker item entities are ordinary items, not AxShulkers-managed containers.
+        if (ShulkerUtils.shouldIgnoreStackedShulker(it)) return;
+
         String name = ShulkerUtils.getShulkerName(it);
         Shulkerbox shulkerbox = Shulkerboxes.getShulker(it, name);
         if (shulkerbox == null) return;
