@@ -3,6 +3,7 @@ package com.artillexstudios.axshulkers.commands;
 import com.artillexstudios.axshulkers.AxShulkers;
 import com.artillexstudios.axshulkers.cache.Shulkerbox;
 import com.artillexstudios.axshulkers.cache.Shulkerboxes;
+import com.artillexstudios.axshulkers.listeners.Listeners;
 import com.artillexstudios.axshulkers.utils.ColorUtils;
 import com.artillexstudios.axshulkers.utils.MessageUtils;
 import com.artillexstudios.axshulkers.utils.PermissionUtils;
@@ -32,6 +33,7 @@ public class Commands implements CommandExecutor {
 
                 AxShulkers.getAbstractConfig().reloadConfig();
                 AxShulkers.getAbstractMessages().reloadConfig();
+                Listeners.refreshMoveListener();
 
                 for (Shulkerbox shulkerbox : Shulkerboxes.getShulkerMap().values()) {
                     AxShulkers.getDB().updateShulker(shulkerbox.getShulkerInventory().getContents(), shulkerbox.getUUID());
